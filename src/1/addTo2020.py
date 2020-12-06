@@ -1,3 +1,13 @@
+""" Add_to_2020.py
+Author: Darren
+Date: 05/12/2020
+
+Process a list of numbers, and determine which two numbers add up to 2020.
+Process a list of numbers and determine which three numbers add up to 2020.
+
+The toboggan moves x right and y down for each iteration.
+"""
+
 import sys
 import os
 

@@ -1,4 +1,8 @@
-""" Process list of rows from a file, where each row contains pwd policy and pwd.
+""" Password_Validation_Match_Posn.py
+Author: Darren
+Date: 05/12/2020
+
+Process list of rows from a file, where each row contains pwd policy and pwd.
 Pwd is only valid if the indicated character is found in either the first numbered
 OR second numbered position.  It is not valid if the character is found in both positions.
 The password policy is 1-indexed.

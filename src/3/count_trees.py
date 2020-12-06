@@ -1,4 +1,8 @@
-""" Count how many trees on the toboggan journey from top left to bottom, 
+""" Count_Trees.py
+Author: Darren
+Date: 05/12/2020
+
+Count how many trees on the toboggan journey from top left to bottom, 
 where # denotes a tree, and . denotes empty space.
 
 The toboggan moves x right and y down for each iteration.
