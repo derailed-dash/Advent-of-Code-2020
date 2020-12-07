@@ -13,6 +13,7 @@ This pwd is invalid, since z is found in BOTH position 5 and position 7.
 
 import sys
 import os
+import time
 
 pwd_file = "input/pwd_file.txt"
 pwd_list = []
@@ -66,18 +67,16 @@ def password_okay(pwd_row):
     #print("Pwd length: " + str(len(pwd)))
 
     if(int(last_posn) > len(pwd)):
-        #print("Password too short")
+        # Password too short
         return False
 
     first_posn_match = False
     second_posn_match = False
 
     if (pwd[int(first_posn)-1] == char_match):
-        #print("Matching char found at position " + str(int(first_posn)-1))
         first_posn_match = True
         
     if (pwd[int(last_posn)-1] == char_match):
-        #print("Matching char found at position " + str(int(last_posn)-1))
         second_posn_match = True
 
     # Only valid if first OR second match, i.e. XOR
@@ -88,7 +87,7 @@ def password_okay(pwd_row):
 
 
 if __name__ == "__main__":
+    t1 = time.perf_counter()
     main()
-
-
-
+    t2 = time.perf_counter()
+    print(f"Execution time: {t2 - t1:0.4f} seconds")

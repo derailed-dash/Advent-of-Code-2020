@@ -11,8 +11,7 @@ The toboggan moves x right and y down for each iteration.
 import sys
 import os
 import math
-from pprint import pprint as pp
-
+import time
 INPUT_TREEMAP_FILE = "input/treemap.txt"
 OUTPUT_TREEMAP_FILE = "output/treemap.txt"
 NAVIGATED_TREEMAP_FILE = "output/navigated_treemap.txt"
@@ -33,6 +32,8 @@ def main():
     output_file = os.path.join(script_dir, OUTPUT_TREEMAP_FILE)
     print("Output file is: " + output_file)
 
+    t1 = time.perf_counter()
+
     treemap = get_treemap(input_file)
     write_treemap(output_file, treemap)
    
@@ -40,14 +41,32 @@ def main():
     navigated_treemap = navigate_treemap(treemap)
     write_treemap(output_file, navigated_treemap)
 
+    t2 = time.perf_counter()
+    print(f"Execution time: {t2 - t1:0.4f} seconds")
+
 
 def write_treemap(a_file, treemap):
+    """Write a treemap (in memory list) to a file.
+ 
+    Args:
+        a_file - the file to be written
+        treemap - the list that represents the tree locations
+    """
+
     with open(a_file, 'w') as f:
         for row in treemap:
             f.write(row + "\n")
 
 
 def get_treemap(a_file):
+    """Read a tree map file, and represent ast a list.
+ 
+    Args:
+        a_file - the tree map file to be read
+
+    Returns:
+        treemap - a list that represents the tree locations
+    """
     with open(a_file, mode="rt") as f:
         
         # get the width of the map
@@ -80,6 +99,16 @@ def get_treemap(a_file):
 
 
 def navigate_treemap(treemap):
+    """Processes a treemap list.
+    Determines how many trees would be hit, 
+    based on specified x/y movement pattern.
+ 
+    Args:
+        treemap - treemap locations as a list
+
+    Returns:
+        navigated_treemap - a new list that shows tree collisions and misses
+    """
     TREE = '#'
     TREE_HIT = 'X'
     TREE_MISS = 'O'
