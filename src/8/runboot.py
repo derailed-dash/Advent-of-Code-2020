@@ -4,18 +4,7 @@ import time
 from pprint import pp
 
 BOOT_CODE_INPUT_FILE = "input/bootcode.txt"
-
-sample_code = [
-    "nop +0",
-    "acc +1",
-    "jmp +4",
-    "acc +3",
-    "jmp -3",
-    "acc -99",
-    "acc +1",
-    "jmp -4",
-    "acc +6"
-]
+SAMPLE_BOOT_CODE_INPUT_FILE = "input/sample_code.txt"
 
 ACC = "acc"
 JMP = "jmp"
@@ -32,10 +21,11 @@ def main():
 
     # path of input file
     input_file = os.path.join(script_dir, BOOT_CODE_INPUT_FILE)
+    sample_input_file = os.path.join(script_dir, SAMPLE_BOOT_CODE_INPUT_FILE)
     print("Input file is: " + input_file)
 
     code = read_input(input_file)
-    #code = sample_code
+    # code = read_input(sample_input_file)
 
     success = run_code(code)
     if (success):

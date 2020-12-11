@@ -70,7 +70,6 @@ def password_okay(pwd_row):
     return True
 
 
-
 if __name__ == "__main__":
     main()
 
