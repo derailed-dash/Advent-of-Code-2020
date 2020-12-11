@@ -1,8 +1,6 @@
-""" Passport_Validation.py
+""" customs_form.py
 Author: Darren
-Date: 06/12/2020
-
-Process K:V pairs to determine if passport is valid
+Date: 07/12/2020
 """
 
 import sys
@@ -22,30 +20,25 @@ def main():
     input_file = os.path.join(script_dir, CUSTOMS_FORM_INPUT_FILE)
     print("Input file is: " + input_file)
     
-    # read in the seat codes
-    group_responses = read_input_any_yes(input_file)
-    sum = 0
-    for response in group_responses:
-        sum += len(response)
-    
-    print(f"For any yes response in each group, the sum is {sum}.")
-
-    group_responses = read_input_all_yes(input_file)
-    sum = 0
+    group_responses = read_input(input_file)
+    sum_any = 0
+    sum_all = 0
     for response in group_responses:
         group_members = response["count"]
         group_response = response["group_response"]
         unique_response_chars = set(group_response)
+        sum_any += len(unique_response_chars)
         for char in unique_response_chars:
             char_count = group_response.count(char)
             if (char_count == group_members):
                 # everyone must have answered yes to this question
-                sum += 1
+                sum_all += 1
     
-    print(f"For ALL yes responses in each group, the sum is {sum}.")
+    print(f"For ALL yes responses in each group, the sum is {sum_all}.")
+    print(f"For any yes responses in each group, the sum is {sum_any}.")
 
 
-def read_input_all_yes(a_file):
+def read_input(a_file):
     # group_responses is a list of dictionaries
     # each dictionary is:
     # {count: n, responses: group_response}
@@ -69,27 +62,6 @@ def read_input_all_yes(a_file):
                     group_response.append(char)
 
         group_responses.append({"count": group_members, "group_response": group_response})
-
-    return group_responses
-
-
-def read_input_any_yes(a_file):
-    group_responses = []
-
-    with open(a_file, mode="rt") as f:
-        group_response = set()
-        for line in f:
-            if (line == "\n"):
-                # current line is blank, so we've reached the end of the current response group
-                group_responses.append(group_response)
-                group_response = set()
-                continue
-
-            for char in line:
-                if (char != "\n"):
-                    group_response.add(char)
-
-        group_responses.append(group_response)     
 
     return group_responses
 

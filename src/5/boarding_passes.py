@@ -1,16 +1,12 @@
-""" Passport_Validation.py
+""" boarding_passes.py
 Author: Darren
-Date: 06/12/2020
-
-Process K:V pairs to determine if passport is valid
+Date: 07/12/2020
 """
 
 import sys
 import os
 import time
 from pprint import pprint as pp
-from itertools import groupby
-from operator import itemgetter
 
 BOARDING_PASS_INPUT_FILE = "input/boarding_passes.txt"
 
