@@ -34,8 +34,8 @@ def main():
     input_file = os.path.join(script_dir, BOOT_CODE_INPUT_FILE)
     print("Input file is: " + input_file)
 
-    #code = read_input(input_file)
-    code = sample_code
+    code = read_input(input_file)
+    #code = sample_code
 
     success = run_code(code)
     if (success):
@@ -47,13 +47,45 @@ def main():
 
 
 def try_substitutions(code):
+    substitutions_tried = 0
+    
+    for index, line in enumerate(code):
+        substituted_code = code.copy()
+
+        substituted = False
+        if (JMP in line):
+            substituted_code[index] = str(line).replace(JMP, NOP)
+            substituted = True
+        
+        if (NOP in line):
+            substituted_code[index] = str(line).replace(NOP, JMP)
+            substituted = True
+
+        if (substituted):
+            substitutions_tried += 1
+            print(f"Substituting at line {index+1}, instruction: {line} -> {substituted_code[index]}")
+            success = run_code(substituted_code)
+            if (success):
+                print(f"Program terminates successfully on iteration {substitutions_tried}. Accumulator value is: {accumulator}.")
+                return True
+
     return False
 
 
+def get_line(a_ptr):
+    return a_ptr + 1
+    
+
 def run_code(code):
+    global accumulator, instruction_ptr
+
+    instruction_ptr = 0
+    accumulator = 0
+    instructions_processed = []
+
     while True:
         if (instruction_ptr in instructions_processed):
-            print(f"[Step {len(instructions_processed) + 1}]: We've done instruction {instruction_ptr} before!")
+            print(f"[Step {len(instructions_processed) + 1}]: We've done instruction {instruction_ptr + 1} before!")
             return False
 
         if (instruction_ptr >= len(code)):
@@ -68,7 +100,7 @@ def process_instruction(code, ptr):
     global instruction_ptr, accumulator
 
     instruction, value = code[ptr].split()
-    print(f"[Step {len(instructions_processed)}][Line {instruction_ptr}]: Executing {instruction} {value}.")
+    # print(f"[Step {len(instructions_processed)}, line {instruction_ptr + 1}]: Executing {instruction} {value}")
 
     if (instruction == ACC):
         accumulator += int(value)
@@ -91,4 +123,5 @@ if __name__ == "__main__":
     t1 = time.perf_counter()
     main()
     t2 = time.perf_counter()
+    print(f"Execution time: {t2 - t1:0.4f} seconds")
 
