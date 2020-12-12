@@ -39,7 +39,7 @@ def main():
 
 
 def find_adapter_permutations(seq):
-    # seed with entry for 0
+    # seed with entry for 0 permutations that only includes the charging point
     solutions = {0: 1}
 
     # iterate through all sorted adapter ratings, after 0
@@ -58,12 +58,10 @@ def find_adapter_permutations(seq):
         # if adapter_jolts is 5, then we will have a matching solution includings adapter_volts = 4, resulting in {5: 1}
         # if adapter_jolts is 6, then we will have matching solutions 4, 5, resulting in {6: (1+1)} = {6: 2}
         # if adapter_jolts is 7, then we will have matching solutions 4, 5, 6 resulting in {7: (1+1+2)} = {7: 4}
-        if adapter_jolts - 1 in solutions.keys():
-            solutions[adapter_jolts] += solutions[adapter_jolts-1]
-        if adapter_jolts - 2 in solutions.keys():
-           solutions[adapter_jolts] += solutions[adapter_jolts-2]
-        if adapter_jolts - 3 in solutions.keys():
-            solutions[adapter_jolts] += solutions[adapter_jolts-3]
+        MAX_JOLTS = 3
+        for j in range(1, MAX_JOLTS+1):
+            if adapter_jolts - j in solutions.keys():
+                solutions[adapter_jolts] += solutions[adapter_jolts - j]
     
     return solutions[max(seq)]
 
