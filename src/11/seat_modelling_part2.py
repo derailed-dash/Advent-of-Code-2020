@@ -77,7 +77,7 @@ def process_seating_rules(seating):
                 # check each of the eight dimensions
                 # iterate through UL, UM, UR, LL, etc
                 for visible_seat in SEATS_TO_TEST.keys():
-                    # set seat location to curren seat
+                    # set seat location to current seat
                     # then we'll move away from it, one x,y vector at a time
                     adjacent_seat_row_num = row_num
                     adjacent_seat_col_num = seat_num

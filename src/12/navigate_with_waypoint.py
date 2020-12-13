@@ -1,7 +1,7 @@
 import sys
 import os
 import time
-from pprint import pp
+from pprint import pprint as pp
 
 INPUT_FILE = "input/nav.txt"
 SAMPLE_INPUT_FILE = "input/sample_nav.txt"
@@ -34,7 +34,7 @@ def main():
     print("Input file is: " + input_file)
 
     nav_instructions = read_input(input_file)
-    pp(nav_instructions)
+    # pp(nav_instructions)
 
     navigate(nav_instructions)
     new_x = location[X]
@@ -54,7 +54,7 @@ def process_instruction(instr):
     instr_type = instr[0]
     instr_mag = int(instr[1:])
 
-    print(f"Instr is {instr_type} with magnitude: {instr_mag}")
+    # print(f"Instr is {instr_type} with magnitude: {instr_mag}")
 
     if (instr_type == 'N'):
         waypoint[Y] = waypoint[Y] + instr_mag
@@ -66,20 +66,17 @@ def process_instruction(instr):
         waypoint[X] = waypoint[X] - instr_mag 
     elif (instr_type == 'R'):
         rotations = instr_mag // 90
-        for i in range(rotations):
+        for _ in range(rotations):
             old_x = waypoint[X]
-            old_y = waypoint[Y]
-
-            waypoint[X] = old_y
+            waypoint[X] = waypoint[Y]
             waypoint[Y] = -old_x
     elif (instr_type == 'L'):
         rotations = instr_mag // 90
-        for i in range(rotations):
-            old_x = waypoint[X]
+        for _ in range(rotations):
             old_y = waypoint[Y]
-
+            waypoint[Y] = waypoint[X]
             waypoint[X] = -old_y
-            waypoint[Y] = old_x
+
     elif (instr_type == 'F'):
         location[X] = location[X] + instr_mag * waypoint[X]
         location[Y] = location[Y] + instr_mag * waypoint[Y]

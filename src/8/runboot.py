@@ -1,7 +1,7 @@
 import sys
 import os
 import time
-from pprint import pp
+from pprint import pprint as pp
 
 BOOT_CODE_INPUT_FILE = "input/bootcode.txt"
 SAMPLE_BOOT_CODE_INPUT_FILE = "input/sample_code.txt"

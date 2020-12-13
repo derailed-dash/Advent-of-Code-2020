@@ -7,7 +7,7 @@ import os
 import time
 import re
 from collections import defaultdict
-from pprint import pp
+from pprint import pprint as pp
 
 bag_example_rules = [
     "light red bags contain 1 bright white bag, 2 muted yellow bags.",
