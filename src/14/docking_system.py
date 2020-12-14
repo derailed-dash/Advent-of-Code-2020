@@ -78,7 +78,7 @@ def process_mem_update_v2(instr, value, mask):
     # Regex to extract the memory address
     addr = int(INSTR_PATTERN.findall(instr)[0])
 
-    # First, get binary equivalent of address supplied
+    # First, get binary equivalent of address supplied.
     # bin converts to binary string equivalent, prefixd with 0b.
     # we need to strip off 0b
     bin_addr = bin(addr)[2:]
