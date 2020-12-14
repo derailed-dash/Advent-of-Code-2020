@@ -1,7 +1,7 @@
 import sys
 import os
 import time
-from pprint import pp
+from pprint import pprint as pp
 
 INPUT_FILE = "input/nav.txt"
 SAMPLE_INPUT_FILE = "input/sample_nav.txt"
