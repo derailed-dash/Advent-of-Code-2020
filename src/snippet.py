@@ -25,5 +25,3 @@ apply_mask = subnet_mask & addr
 print(f"Mask\t: {bin(subnet_mask)} = {subnet_mask}")
 print(f"Addr\t: {bin(addr)} = {addr}")
 print(f"Res\t: {bin(apply_mask)} = {apply_mask}")
-
-for i, subnet_ in enumerate(zip(subnet_mask, addr)):
