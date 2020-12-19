@@ -7,15 +7,14 @@ from pprint import pprint as pp
 INPUT_FILE = "input/data.txt"
 SAMPLE_INPUT_FILE = "input/sample_data.txt"
 
-
 def main():
     # get absolute path where script lives
     script_dir = os.path.dirname(__file__) 
     print("Script location: " + script_dir)
 
     # path of input file
-    # input_file = os.path.join(script_dir, INPUT_FILE)
-    input_file = os.path.join(script_dir, SAMPLE_INPUT_FILE)
+    input_file = os.path.join(script_dir, INPUT_FILE)
+    # input_file = os.path.join(script_dir, SAMPLE_INPUT_FILE)
     print("Input file is: " + input_file)
 
     input = read_input(input_file)
@@ -24,20 +23,24 @@ def main():
     rules, messages = process_input(input)
     pp(rules)
 
+    # reverse the rule stack, because we want to pop and process from the right
+    # rules[0] will look like [[11, 8]], so index again with 0 to extract the inner list.
+    first_rule = list(reversed(rules[0][0]))
     valid_rules_count = 0
-    test_rule = list(reversed(rules[0][0]))
     for message in messages:
-        # reverse the rule stack, because we want to pop and process from the right
-        if validate(message, list(reversed(rules[0][0])), rules):
+        # Use a copy of the first_rule, since we create and modify a stack from this
+        if validate(message, first_rule.copy(), rules):
             valid_rules_count += 1
+
     print(f"Sum of valid rules: {valid_rules_count}")
 
 
 def process_input(input):
-    # E.g. [[4, 1, 5]]
-    #      [[2, 3], [3, 2]]
-    #      'a'
-    #      'b'
+    # Creates rules using this structure:
+    # 0: [[4, 1, 5]]
+    # 1: [[2, 3], [3, 2]]
+    # 2: 'a'
+    # 3: 'b'
     rules = {}
     messages = []
 
@@ -122,11 +125,11 @@ def validate(msg, rule_stack, rules):
             return validate(msg[1:], rule_stack, rules)
     else:
         # not a str, so we need to recurse
-        # E.g. if we recurse 5, 1, 4
-        # when {5: 'a'}
+        # E.g. if we recurse 2, 1, 3
+        # when {2: 'a'}
         for sub_rule in rules[current_rule]:
             # use list concatenation to add the current rule to the rule stack
-            # E.g. this might replace [5, 1, 4] with [5, 1, 'a']
+            # E.g. this might replace [3, 1] with ['a']
             # if a sub_rule fails to validate, then the recursed function will return False, 
             # but this for loop will not return.
             # For this calling function to return False, NONE of the recursed calls in this loop must be valid.
