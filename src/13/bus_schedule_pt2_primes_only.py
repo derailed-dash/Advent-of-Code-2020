@@ -15,8 +15,8 @@ def main():
     print("Script location: " + script_dir)
 
     # path of input file
-    # input_file = os.path.join(script_dir, INPUT_FILE)
-    input_file = os.path.join(script_dir, SAMPLE_INPUT_FILE)
+    input_file = os.path.join(script_dir, INPUT_FILE)
+    # input_file = os.path.join(script_dir, SAMPLE_INPUT_FILE)
     print("Input file is: " + input_file)
 
     buses = split_input(read_input(input_file))
