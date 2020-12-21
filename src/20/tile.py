@@ -77,7 +77,7 @@ class Tile:
 
     def get_configurations(self):
         # This is costly.  Match edges before trying combos
-        
+
         configurations = []
         configurations.append(self)
         configurations.append(self.flip_x())
@@ -101,6 +101,7 @@ class Tile:
         return configurations
 
     def get_edge_values(self):
+        # This is the quick way of checking if a tile has a matching edge
         # return numeric val of edges and reversed edges
         edge_values = []
         for edge in self.get_edges():

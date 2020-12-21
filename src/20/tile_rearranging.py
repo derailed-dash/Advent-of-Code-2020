@@ -3,7 +3,6 @@ import os
 import time
 import re
 from tile import Tile
-from collections import deque
 from pprint import pprint as pp
 
 INPUT_FILE = "input/data.txt"
