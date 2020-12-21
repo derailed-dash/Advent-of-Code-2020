@@ -32,7 +32,7 @@ def main():
             if ingredient in ingredients_list:
                 not_candidate_occurences += 1
 
-    print(f"Occurrencies of non-candidates: {not_candidate_occurences}")
+    print(f"Occurrences of non-candidates: {not_candidate_occurences}")
 
     assigned_allergens = assign_allergens(refined_candidates)
     canonical_dangerous_ingredients = []
@@ -71,6 +71,7 @@ def process_combos(combos):
         refined_candidates[allergen] = set.intersection(*ingredient_list)    
 
     all_refined_candidates = set()
+    # unpack all the refined_candidates sets, and make superset.
     all_refined_candidates.update(*refined_candidates.values())
     not_candidates = unique_ingredients.difference(all_refined_candidates)
 
