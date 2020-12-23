@@ -117,8 +117,6 @@ def build_map(tiles, corners):
                         current_tile_id = next_tile_down
                         current_tile = tiles[current_tile_id]
                         current_tile_row.append(current_tile_id)
-                    else:
-                        print(f"We should be done. Remaining tiles = {len(other_tiles)}")
                 else:
                     # make our current tile the last one we added
                     current_tile_id = other_tile_id
