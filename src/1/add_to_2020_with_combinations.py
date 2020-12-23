@@ -25,7 +25,7 @@ def main():
 
 def determine_terms(entries, target, num_terms):
     for num_list in combinations(entries, num_terms):
-        the_sum = sum([*num_list])
+        the_sum = sum(num_list)
         if the_sum == target:
             print(f"Terms: {num_list}.")
             print(f"And the product is: " + str(prod(num_list)))

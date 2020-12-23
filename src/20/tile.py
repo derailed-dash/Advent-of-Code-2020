@@ -8,6 +8,14 @@ class Tile:
         """ Returns the tile as a list of strings """
         return self._data
 
+    def get_inner(self):
+        new_data = []
+        for row in self.get_data()[1:-1]:
+            new_row = row[1:-1]
+            new_data.append(new_row)
+
+        return new_data
+
     def init_edges(self):
         top = self.get_data()[0]
         bottom = self.get_data()[-1]
@@ -34,8 +42,8 @@ class Tile:
         return self._edges[2]
     
     def get_left_edge(self):
-        return self._edges[3]
-        
+        return self._edges[3]       
+
     def __eq__(self, other):
         return self.get_data() == other.get_data()
 
@@ -112,3 +120,7 @@ class Tile:
             edge_values.append(int(binary_edge, 2))
 
         return edge_values
+
+    def edge_value(self, edge):
+        binary_edge = edge.replace(".", "0").replace("#", "1")
+        return int(binary_edge, 2)   
