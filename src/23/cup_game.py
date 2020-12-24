@@ -1,7 +1,6 @@
 import sys
 import os
 import time
-import re
 from circular_linked_list import Circular_Linked_List
 from pprint import pprint as pp
 
