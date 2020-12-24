@@ -22,12 +22,11 @@ class Node(object):
 class Circular_Linked_List(object):
     '''
         Any retrievals or inserts by index will be costly for large lists.
+        Generally, any interactions with the class should return node values, not the nodes themselves.
+        Same goes for updates.
     '''
 
     def __init__(self, head = None, end = None):
-        '''
-            Initalize a linke list with a head and a tail.
-        '''
         self._head = head
         self._end = end
 
@@ -47,13 +46,20 @@ class Circular_Linked_List(object):
         return self._head.get_data()
 
     def move_head_after_value(self, value):
+        '''
+            Move the head to be the node after the specified value
+            This list can't traverse backwards, which is why I'm doing it this way
+        '''
         retrieved_node = self._nodedict[value]
         self._end = retrieved_node
         self._head = retrieved_node.get_next()
 
 
     def move_head_by_index(self, index):
-        # TBC
+        '''
+            Set the head to the new index value.
+            Fine for small lists.
+        '''
         if index >= self.get_size():
             raise ValueError("Index out of bounds")  
 
@@ -110,6 +116,10 @@ class Circular_Linked_List(object):
         return "\n".join(return_str)
         
     def __getitem__(self, index):
+        '''
+            Allows indexing of this linked list.
+            Works fine for small lists. Slow for large.
+        '''
         if index >= self.get_size():
             raise ValueError("Index out of bounds")  
 
@@ -178,6 +188,9 @@ class Circular_Linked_List(object):
             return
     
     def index_of(self, reference_value):
+        '''
+            Identifies the index of the value supplied
+        '''
         current_index = 0
         current_node = self._head
 
@@ -192,6 +205,9 @@ class Circular_Linked_List(object):
         raise ValueError("Value not in list")
                 
     def insert_after_index(self, index, data):
+        '''
+            Inserts a new node after the index supplied
+        '''
         # if we are inserting after the end node, then just use the insert_end method
         if index == (self.get_size()-1):
             self.insert_end(data)
@@ -220,6 +236,8 @@ class Circular_Linked_List(object):
     def insert_after_node(self, ref_data, data):
         '''
             Insert a node at the middle of our linked list, AFTER a given node.
+            This one determines where to insert AFTER, by using the dict lookup.
+            Thus, much faster than insert_after_index() with large lists.
         ''' 
         new_node = self.create_node(data)
         previous_node = self._nodedict[ref_data]
@@ -230,7 +248,7 @@ class Circular_Linked_List(object):
         
     def pop_beg(self):
         '''
-            Delete and return node at the beginning of our list.
+            Delete and return value at the beginning of our list.
         ''' 
         
         if self._head != None:
@@ -253,7 +271,7 @@ class Circular_Linked_List(object):
           
     def pop_end(self):
         '''
-            Delete and return node at the end of our list.
+            Delete and return value at the end of our list.
         ''' 
         
         if self._end != None:
@@ -278,6 +296,10 @@ class Circular_Linked_List(object):
             raise ValueError("The list is empty")
 
     def pop_after_value(self, value):
+        '''
+            Delete and return the value in the node AFTER the value specified.
+            Would prefer to implement pop(self, value), but I'd need to traverse backwards.
+        '''
         previous_node = self._nodedict[value]
         node_to_pop = previous_node.get_next()
         new_next_node = node_to_pop.get_next()
@@ -317,6 +339,10 @@ class Circular_Linked_List(object):
         return current_node.get_data()
         
     def get_list(self):
+        ''' 
+            Convert to a regular list.
+            Costly for large lists.
+        '''
         the_list = []
         # grab the head
         curr_node = self._head
@@ -348,6 +374,7 @@ class Circular_Linked_List(object):
     def get_prev_node(self, ref_node):
         '''
             Return the node before a given reference node.
+            Allows backwards traversal, but doesn't scale well to large lists.
         ''' 
         
         # handle empty list case
