@@ -14,20 +14,14 @@ def main():
     print("Script location: " + script_dir)
 
     # path of input file
-    # input_file = os.path.join(script_dir, INPUT_FILE)
-    input_file = os.path.join(script_dir, SAMPLE_INPUT_FILE)
+    input_file = os.path.join(script_dir, INPUT_FILE)
+    # input_file = os.path.join(script_dir, SAMPLE_INPUT_FILE)
     print("Input file is: " + input_file)
 
     data = read_input(input_file)
 
     # get dict of tiles
     tiles = process_data(data)
-    for tile_ids in tiles:
-        current_tile = tiles[tile_ids]
-        print(current_tile)
-        print(f"Edge values: {current_tile.get_edge_values()}")
-        print("\n".join(current_tile.get_inner()))
-        break
     
     # part 1
     corners = get_corners(tiles)
@@ -35,14 +29,79 @@ def main():
 
     # build whole map
     tile_rows = build_map(tiles, corners)
+
+    # E.g. [[2971, 1489, 1171], [2729, 1427, 2473], [1951, 2311, 3079]]
     pp(tile_rows)
 
+    # part 1
+    uber_tile = make_uber_tile(tiles, tile_rows)
+    for i, uber_tile_config in enumerate(uber_tile.get_configurations()):
+        print(f"\nIteration {i+1}")
+        #print(uber_tile_config)
+        monsters_found = find_sea_monster(uber_tile_config.get_data())
+        if monsters_found > 0:
+            monster_str = "".join(uber_tile_config.get_data())
 
-def make_uber_tile(tile_rows):
-    # for each tile row
-    #   join all the inner rows to make uber rows
-    # use these to create a new uber tile
-    pass
+            # count the '#', and remove the 15 chars that represent each monster
+            wavy_count = monster_str.count('#') - monsters_found*15
+            print(f"Wavy count: {wavy_count}")
+            break
+
+
+def find_sea_monster(image_str):
+    monster_middle = re.compile(r"(#....##....##....###)+")
+    monster_bottom = re.compile(r"(#..#..#..#..#..#)+")
+    monster_top = re.compile(r"#")   
+
+    monsters_found = 0
+
+    # start by matching the middle of the monster, since it is the longest match
+    # and therefore likely to match the least number of times
+    for i, line in enumerate(image_str):
+        match_middle = monster_middle.search(line)
+
+        if match_middle:
+            # we've matched the middle
+            # there might be more than one match on a line
+            # for each middle match, check lines above and below.
+            # if we match all three, we've got a complete monster.
+            matches = monster_middle.finditer(line)
+
+            for a_match in matches:
+                start = a_match.start()
+                end = a_match.end()
+
+                if i == 0:
+                    # can't have a monster middle on top line
+                    continue
+                if i == (len(image_str) - 1):
+                    # can't have a monster middle on last line
+                    continue
+
+                match_bottom = monster_bottom.search(image_str[i+1][start+1:end])
+                match_top = monster_top.search(image_str[i-1][start+18:start+19])
+                if match_bottom and match_top:
+                    monsters_found += 1
+
+    return monsters_found
+
+
+def make_uber_tile(tiles, tile_rows):
+    uber_rows = []
+
+    rows_per_tile = len(tiles[tile_rows[0][0]].get_inner())
+
+    # here we stitch together the matching 'inner' tile row for all adjacent tiles
+    for tile_row in tile_rows:
+        for i in range(rows_per_tile):
+            new_row = ""
+            for tile_id in tile_row:
+                tile = tiles[tile_id]
+                new_row += tile.get_inner()[i]
+            
+            uber_rows.append(new_row)
+
+    return Tile(uber_rows)
 
 
 def build_map(tiles, corners):
