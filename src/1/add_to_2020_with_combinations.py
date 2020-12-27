@@ -1,3 +1,19 @@
+""" Add_to_2020.py
+Author: Darren
+Date: 05/12/2020
+
+Solving https://adventofcode.com/2020/day/1
+
+Process a list of numbers, and determine which two numbers add up to 2020.
+Process a list of numbers and determine which three numbers add up to 2020.
+
+Solution 2 of 2:
+
+This program uses itertools.combinations() to return all the combinations from n numbers.
+Thus, we can generically use the function to any n numbers.
+It is brute force, so not particularly fast.
+"""
+
 import sys
 import os
 import time
@@ -16,20 +32,23 @@ def main():
     input_file = os.path.join(script_dir, INPUT_FILE)
     print("Input file is: " + input_file)
     entries = read_input(input_file)
-    print(entries)
+    # print(entries)
 
     target = 2020
-    determine_terms(entries, target, 2)
-    determine_terms(entries, target, 3)
+    terms = determine_terms(entries, target, 2)
+    print(f"Terms: {terms}.")
+    print(f"And the product is: " + str(prod(terms)))
+    
+    terms = determine_terms(entries, target, 3)
+    print(f"Terms: {terms}.")
+    print(f"And the product is: " + str(prod(terms)))
 
 
 def determine_terms(entries, target, num_terms):
     for num_list in combinations(entries, num_terms):
         the_sum = sum(num_list)
         if the_sum == target:
-            print(f"Terms: {num_list}.")
-            print(f"And the product is: " + str(prod(num_list)))
-            break
+            return num_list
 
 
 def read_input(a_file):
