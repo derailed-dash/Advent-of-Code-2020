@@ -2,16 +2,25 @@
 Author: Darren
 Date: 05/12/2020
 
+Solving https://adventofcode.com/2020/day/3
+
 Count how many trees on the toboggan journey from top left to bottom, 
 where # denotes a tree, and . denotes empty space.
 
 The toboggan moves x right and y down for each iteration.
+
+Solution 1 of 2:
+    Build a list to hold the coordinates of every tree, i.e. as a 2D array
+    Replicate the array in the x direction, as many times as necessary, depending on x/y numbers.
+    Create a copy of the array to hold the hits and misses.
+    Step down and across the array.  Mark all hits and misses.
 """
 
 import sys
 import os
 import math
 import time
+
 INPUT_TREEMAP_FILE = "input/treemap.txt"
 OUTPUT_TREEMAP_FILE = "output/treemap.txt"
 NAVIGATED_TREEMAP_FILE = "output/navigated_treemap.txt"
@@ -32,17 +41,16 @@ def main():
     output_file = os.path.join(script_dir, OUTPUT_TREEMAP_FILE)
     print("Output file is: " + output_file)
 
-    t1 = time.perf_counter()
-
     treemap = get_treemap(input_file)
-    write_treemap(output_file, treemap)
+
+    # if we want to write visual representation to file...
+    # write_treemap(output_file, treemap)
    
     output_file = os.path.join(script_dir, NAVIGATED_TREEMAP_FILE)
-    navigated_treemap = navigate_treemap(treemap)
-    write_treemap(output_file, navigated_treemap)
-
-    t2 = time.perf_counter()
-    print(f"Execution time: {t2 - t1:0.4f} seconds")
+    navigated_treemap = navigate_treemap(treemap)   
+    print(f"We have hit {''.join(navigated_treemap).count('X')} trees")
+    
+    # write_treemap(output_file, navigated_treemap)
 
 
 def write_treemap(a_file, treemap):
@@ -89,11 +97,7 @@ def get_treemap(a_file):
 
         # Go back to the beginning of the file
         f.seek(0)
-        treemap = [] 
-         
-        for line in f.readlines():
-            line_to_add = horizontal_repeats * line.rstrip('\n')
-            treemap.append(line_to_add)
+        treemap = [horizontal_repeats * line.rstrip('\n') for line in f.readlines()]
 
     return treemap
 
@@ -112,15 +116,14 @@ def navigate_treemap(treemap):
     TREE = '#'
     TREE_HIT = 'X'
     TREE_MISS = 'O'
-
-    trees_hit = 0
-    
-    # x, y coordinates
+ 
+    # x, y coordinates; 1-indexed, not 0
     posn = [1, 1]
 
-    # let's create a new treemap, and update it with the hit/miss markers
+    # let's create a copy of the treemap, and update it with the hit/miss markers
     navigated_treemap = treemap[:]    
     
+    # whilst we have rows left
     while (posn[1] <= len(treemap)):
         # Now obtain the treemap row [y-1], and the treemap index [x-1], and see what it is.
         if ((posn[1]-1) <= len(navigated_treemap)):
@@ -128,16 +131,17 @@ def navigate_treemap(treemap):
                 at_location = navigated_treemap[posn[1]-1][posn[0]-1]
                 # print(f"Current position {posn}:" + navigated_treemap[posn[1]-1][posn[0]-1])
 
-                # Now update our treemap with hit or miss
+                # Get this row.  Convert from str to list
                 newrow = list(navigated_treemap[posn[1]-1])
 
+                # replace the current char
                 if (at_location == TREE):
-                    trees_hit = trees_hit + 1
                     newrow[posn[0]-1] = TREE_HIT
-                    navigated_treemap[posn[1]-1] = "".join(newrow)
                 else:
                     newrow[posn[0]-1] = TREE_MISS
-                    navigated_treemap[posn[1]-1] = "".join(newrow)
+                
+                # replace the row
+                navigated_treemap[posn[1]-1] = "".join(newrow)
             except IndexError:
                 print("Error")
                 print(posn)
@@ -145,9 +149,6 @@ def navigate_treemap(treemap):
         posn[0] = posn[0] + x_movement
         posn[1] = posn[1] + y_movement
 
-    print("Bottom reached.")
-    print(f"We have hit {trees_hit} trees")
-    
     return navigated_treemap
 
 
@@ -156,7 +157,10 @@ if __name__ == "__main__":
         x_movement = int(input("Enter x movement: "))
         y_movement = int(input("Enter y movement: "))
 
+        t1 = time.perf_counter()
         main()
+        t2 = time.perf_counter()
+        print(f"Execution time: {t2 - t1:0.4f} seconds")
     except ValueError:
         print("Movement must be an integer value")
 
