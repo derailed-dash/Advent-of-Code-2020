@@ -1,6 +1,12 @@
 """ boarding_passes.py
 Author: Darren
 Date: 07/12/2020
+
+Solving https://adventofcode.com/2020/day/5
+
+Process boarding passes, which can contain seat codes in format RRRRRRRCCC.
+Seat code is binary, where R (row) can be F or B and C (column) can be L or R.
+
 """
 
 import sys
@@ -15,10 +21,7 @@ class BoardingPass:
     def __init__(self, seat_code: str):
         """
         Creates a boarding pass for given seat code.
-        Seat code looks like RRRRRRRCCC where R is row and C is column.
-        
-        Seat codes use binary format, 
-        where R can be F or B (front or back), and C can be R or L (right or left).
+        E.g. seat code "BBFFFFBRLR"
         """
         self._seat_code = seat_code
 
@@ -27,6 +30,7 @@ class BoardingPass:
     
     def get_seat_row(self):
         """
+        7-bit row number from 0-127.
         F = 0 and B = 1.
         """
         seat_row = self.get_seat_code()[:7].replace("F", "0").replace("B", "1")
@@ -34,6 +38,7 @@ class BoardingPass:
 
     def get_seat_col(self):
         """
+        3-bit col number from 0-7
         L = 0 and R = 1
         """
         seat_col = self.get_seat_code()[7:].replace("L", "0").replace("R", "1")
@@ -67,17 +72,15 @@ def main():
         p = BoardingPass(pass_code)
         seat_ids.add(p.get_seat_id())
 
-    print("Highest seat code from input: " + str(max(seat_ids)))
+    min_seat_id = min(seat_ids)
+    max_seat_id = max(seat_ids)
+    print("Highest seat code from input: " + str(max_seat_id))
     
-    last_possible_seat = BoardingPass("BBBBBBBRRR")
-    print("Last possible seat " + str(last_possible_seat.get_seat_id()))
-
-    possible_seats = set(range(last_possible_seat.get_seat_id()))
+    possible_seats = set(range(min_seat_id, max_seat_id))
     missing_seats = possible_seats.difference(seat_ids)
 
     # Our seat is in a non-contiguous block of missing seats...
-    print("Our seat: ")
-    print(find_noncontiguous_number(missing_seats))
+    print(f"Our seat: {missing_seats}")
 
 
 def find_noncontiguous_number(numbers): 
