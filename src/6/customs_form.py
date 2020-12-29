@@ -1,6 +1,14 @@
 """ customs_form.py
 Author: Darren
 Date: 07/12/2020
+
+Solving: https://adventofcode.com/2020/day/6
+
+Solution 1 of 2:
+    Each collection of group responses is stored in a dictionary, along with group size.
+    Create a set to get the unique responses.
+    Count total occurences of a response and see if matches group size, 
+    to identify responses common to all members of the group.
 """
 
 import sys
@@ -39,8 +47,11 @@ def main():
 
 
 def read_input(a_file):
-    # group_responses is a list of dictionaries
-    # each dictionary is:
+    # Each row are responses from an individual.
+    # A group of individuals is separated by a blank line.
+    #
+    # Group_responses is a list of dictionaries
+    # Each dictionary is:
     # {count: n, responses: group_response}
     group_responses = []
 
