@@ -1,7 +1,21 @@
+"""
+Author: Darren
+Date: 10/12/2020
+
+Solving: https://adventofcode.com/2020/day/9
+
+Valid numbers must be the sum of two previous numbers in a sliding window.
+User itertools.combinations() to identify any two numbers that add up to latest number.
+
+Part 1 is to find the first invalid number.
+Part 2 is to find a contiguous set of numbers that add up to the invalid number.
+"""
+
 import sys
 import os
 import time
 from collections import deque
+from itertools import combinations
 from pprint import pprint as pp
 
 SEQUENCE_INPUT_FILE = "input/sequence.txt"
@@ -20,9 +34,6 @@ def main():
 
     sequence = read_input(input_file)
 
-    # convert list of str to list of int
-    sequence = list(map(int, sequence)) 
-
     invalid_num = process_seq(sequence)
     print(f"{invalid_num} is invalid.")
     
@@ -38,25 +49,35 @@ def main():
 def find_contiguous_block(num, seq):
     limits = []
 
+    # define function for inner loop.  Use a function so we can return from it.
+    # This allows us to 'continue' outer loop, rather than inner loop.
     def inner(i, sum):
         for j in range(i+1, len(seq)):
             sum += seq[j]
             if sum > num:
-                return
+                # we've gone bust, so try next outer
+                return False
             
             if sum == num:
+                # store start and end indexes in seq
                 limits.append(i)
                 limits.append(j)
-                return
+                # success
+                return True
 
+    # try first number in contiguous block
     for i in range(0, len(seq)):
         sum = seq[i]
-        inner(i, sum)
+        if inner(i, sum):
+            # we've found our contiguous numbers.  We can finish now.
+            break
     
     return limits
 
 
 def process_seq(sequence):
+
+    # create a FILO queue to hold our sliding window of numbers
     q = deque()
     seq_ptr = 0
 
@@ -83,22 +104,16 @@ def process_seq(sequence):
 
 
 def check_sum(num, q):
-    for i in range(len(q)):
-        for j in range(i+1, len(q)):
-            val1 = q[i]
-            val2 = q[j]
-            # print(f"Testing if sum of {val1} and {val2} is {num}")
-            if num == val1 + val2:
-                return True
+    for num_1, num_2 in combinations(q, 2):
+        if num == num_1 + num_2:
+            return True
     
     return False
 
 
 def read_input(a_file):
     with open(a_file, mode="rt") as f:
-        lines = f.read().splitlines()
-        
-    return lines
+        return [int(line) for line in f.read().splitlines()]
 
 
 if __name__ == "__main__":
