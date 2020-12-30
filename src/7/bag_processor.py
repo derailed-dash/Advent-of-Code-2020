@@ -1,5 +1,16 @@
 """
-Part 2 was quite quick for me, i worked out it's just num * (1 + count(bag)), recursed.
+Author: Darren
+Date: 08/12/2020
+
+Solving: https://adventofcode.com/2020/day/7
+
+Rules are like:
+    light red bags contain 1 bright white bag, 2 muted yellow bags.
+    muted yellow bags contain 2 shiny gold bags, 9 faded blue bags.
+    faded blue bags contain no other bags.
+
+How many colors can, eventually, contain at least one shiny gold bag?
+
 """
 
 import sys
@@ -23,7 +34,6 @@ bag_example_rules = [
 
 BAG_RULES_INPUT_FILE = "input/bag_rules.txt"
 SHINY_GOLD = "shiny gold"
-FADED_BLUE = "faded blue"
 
 
 def main():
@@ -50,11 +60,12 @@ def main():
     bag_count = recursive_count(rules, searching_for) - 1
     print(f"{searching_for} contains {bag_count} bags.")
 
+
 def recursive_count(rules, search_bag):
     # count this bag
     count = 1
 
-    # now get the bags that this bag contains
+    # now get the bags that this bag contains as a dict
     contained_bags = rules[search_bag]
 
     # iterate through the contained bag types, e.g. 'muted yellow'
@@ -103,6 +114,8 @@ def process_rules(bag_rules):
     # defaultdict, to autocreate a nested dictionary for each assignment 
     rules = defaultdict(dict)
     for rule_line in bag_rules:
+        # rule line like: 'light red bags contain 1 bright white bag, 2 muted yellow bags.'
+        
         # findall returns 'light red' as a list, so we convert to string
         bag = "".join(container_bag_pattern.findall(rule_line))
 
