@@ -1,3 +1,19 @@
+"""
+Author: Darren
+Date: 12/12/2020
+
+Solving: https://adventofcode.com/2020/day/12
+
+Modelling ship navigation.
+
+Solution 1 of 2:
+
+Part 2
+------
+N, S, E, W means translate the waypoint by given magnitude.
+L, R means rotate waypoint about the ferry, maintaining the distance between ship and waypoint
+F means move the ferry (translate) towards waypoint, n times the magnitude of the vector to the waypoint
+"""
 import sys
 import os
 import time
@@ -29,8 +45,8 @@ def main():
     print("Script location: " + script_dir)
 
     # path of input file
-    input_file = os.path.join(script_dir, INPUT_FILE)
-    # input_file = os.path.join(script_dir, SAMPLE_INPUT_FILE)
+    #input_file = os.path.join(script_dir, INPUT_FILE)
+    input_file = os.path.join(script_dir, SAMPLE_INPUT_FILE)
     print("Input file is: " + input_file)
 
     nav_instructions = read_input(input_file)
@@ -80,6 +96,8 @@ def process_instruction(instr):
     elif (instr_type == 'F'):
         location[X] = location[X] + instr_mag * waypoint[X]
         location[Y] = location[Y] + instr_mag * waypoint[Y]
+
+    return location
         
 
 def read_input(a_file):
