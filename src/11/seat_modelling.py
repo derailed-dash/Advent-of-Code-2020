@@ -1,3 +1,12 @@
+"""
+Author: Darren
+Date: 12/12/2020
+
+Solving: https://adventofcode.com/2020/day/11
+
+Modelling people sitting on seats.
+"""
+
 import sys
 import os
 import time
@@ -9,9 +18,6 @@ SAMPLE_INPUT_FILE = "input/sample_seating.txt"
 EMPTY = 'L'
 OCCUPIED = '#'
 FLOOR = '.'
-
-MAX_OCCUPIED = 5
-MAX_VISIBLE = 8
 
 # each adjacent seat position, expressed as relative [row][seat]
 SEATS_TO_TEST = {
@@ -37,11 +43,13 @@ def main():
     seating = read_input(input_file)
     # pp (seating)
 
+    # part 1
+    max_occupied = 4
     last_seating = seating
     count = 0
     while True:
         count += 1
-        new_seating = process_seating_rules(last_seating)
+        new_seating = process_seating_rules_adjacent(last_seating, max_occupied)
 
         if (new_seating == last_seating):
             print(f"Iteration {count}: Seating layout has not changed.")
@@ -49,18 +57,24 @@ def main():
             break
 
         last_seating = new_seating        
+
+    # part 2
+    max_occupied = 5
+    last_seating = seating
+    count = 0
+    while True:
+        count += 1
+        new_seating = process_seating_rules_line_of_sight(last_seating, max_occupied)
+
+        if (new_seating == last_seating):
+            print(f"Iteration {count}: Seating layout has not changed.")
+            print(f"Seats occuped = {count_occupied(new_seating)}")
+            break
+
+        last_seating = new_seating    
     
 
-def count_occupied(seating):
-    occupied_count = 0
-
-    for row in seating:
-        occupied_count += row.count(OCCUPIED)
-
-    return occupied_count
-
-
-def process_seating_rules(seating):
+def process_seating_rules_line_of_sight(seating, max_occupied):
     # if seat is empty and no adjacent seats are occupied, this becomes occupied
     # note: everyone sits at the same time, so we only need to consider seating plan at the start of the iteration
     # I.e. if the seat to the left is filled on *this* iteration, we ignore it.
@@ -106,10 +120,55 @@ def process_seating_rules(seating):
                     if (visible_occupied == 0):
                         new_seating[row_num] = new_seating[row_num][:seat_num] + OCCUPIED + new_seating[row_num][seat_num+1:]
                 elif seat == OCCUPIED:
-                    if (visible_occupied >= MAX_OCCUPIED):
+                    if (visible_occupied >= max_occupied):
                         new_seating[row_num] = new_seating[row_num][:seat_num] + EMPTY + new_seating[row_num][seat_num+1:]
 
     # pp(new_seating)
+    return new_seating
+
+
+def count_occupied(seating):
+    occupied_count = 0
+
+    for row in seating:
+        occupied_count += row.count(OCCUPIED)
+
+    return occupied_count
+
+
+def process_seating_rules_adjacent(seating, max_occupied):
+    # if seat is empty and no adjacent seats are occupied, this becomes occupied
+    # note: everyone sits at the same time, so we only need to consider seating plan at the start of the iteration
+    # I.e. if the seat to the left is filled on *this* iteration, we ignore it.
+
+    new_seating = seating.copy()
+
+    for row_num, row in enumerate(seating):
+        for seat_num, seat in enumerate(row):
+
+            visible_occupied = 0
+
+            if seat != FLOOR:
+                # check each of the eight dimensions
+                for visible_seat in SEATS_TO_TEST.keys():
+                    # iterate through UL, UM, UR, LL, etc
+                    adjacent_seat_row_num = row_num + SEATS_TO_TEST[visible_seat][0]
+                    adjacent_seat_col_num = seat_num + SEATS_TO_TEST[visible_seat][1]
+
+                    # check the seat we want to check is not out of bounds
+                    if (adjacent_seat_row_num >= 0 and adjacent_seat_row_num < len(seating)):
+                        if (adjacent_seat_col_num >= 0 and adjacent_seat_col_num < len(row)):
+                            if (seating[adjacent_seat_row_num][adjacent_seat_col_num]) == OCCUPIED:
+                                visible_occupied += 1
+                
+                if seat == EMPTY:
+                    if (visible_occupied == 0):
+                        new_seating[row_num] = new_seating[row_num][:seat_num] + OCCUPIED + new_seating[row_num][seat_num+1:]
+                elif seat == OCCUPIED:
+                    if (visible_occupied >= max_occupied):
+                        new_seating[row_num] = new_seating[row_num][:seat_num] + EMPTY + new_seating[row_num][seat_num+1:]
+
+    #pp(new_seating)
     return new_seating
 
 
