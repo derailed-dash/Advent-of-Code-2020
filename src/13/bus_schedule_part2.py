@@ -1,3 +1,21 @@
+"""
+Author: Darren
+Date: 13/12/2020
+
+Solving: https://adventofcode.com/2020/day/13
+
+Solution 1 of 2: doing it the hard way
+
+Part 2
+------
+Input like: 7,13,x,x,59,x,31,19
+
+Find first time where 7 departs at t=0, 13 departs at t=1, x departs at t=2, etc.
+Bus ID also represents the duration of each bus loop.
+E.g. bus 7 departs every 7 minutes.
+x departure times and IDs are irrelevant.
+"""
+
 import sys
 import os
 import time

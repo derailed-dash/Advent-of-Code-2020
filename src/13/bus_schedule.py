@@ -1,25 +1,40 @@
+"""
+Author: Darren
+Date: 13/12/2020
+
+Solving: https://adventofcode.com/2020/day/13
+
+Part 1
+------
+
+Input like:
+939
+7,13,x,x,59,x,31,19
+
+First line is the estimate of earliest departure timestamp.
+Second line lists bus IDs, which are also the time taken by each of their loops.
+What is the earliest bus we can take?
+"""
+
 import sys
 import os
 import time
 from operator import itemgetter
 from pprint import pp
 
+SCRIPT_DIR = os.path.dirname(__file__) 
 INPUT_FILE = "input/bus_schedule.txt"
 SAMPLE_INPUT_FILE = "input/sample_schedule.txt"
 
 
 def main():
-    # get absolute path where script lives
-    script_dir = os.path.dirname(__file__) 
-    print("Script location: " + script_dir)
-
-    # path of input file
-    input_file = os.path.join(script_dir, INPUT_FILE)
-    # input_file = os.path.join(script_dir, SAMPLE_INPUT_FILE)
+    input_file = os.path.join(SCRIPT_DIR, INPUT_FILE)
+    # input_file = os.path.join(SCRIPT_DIR, SAMPLE_INPUT_FILE)
     print("Input file is: " + input_file)
 
     input_data = read_input(input_file)
     target, bus_sched = split_input(input_data)
+    print(f"Target time: {target}")
 
     bus = process_schedule(target, bus_sched)
     bus_num = bus[0]
@@ -29,6 +44,7 @@ def main():
 
 
 def process_schedule(target, sched):
+    # build dict to store the earliest time for a given bus ID, after our target time
     buses = {}
 
     for bus in sched:
@@ -37,15 +53,16 @@ def process_schedule(target, sched):
             bus_sched = int(bus)
             buses[bus_sched] = compute_first_available_time(target, bus_sched)
 
+    # return the bus with minimum time (value), not minimum bus ID (key)
     return min(buses.items(), key=itemgetter(1))
 
 
 def compute_first_available_time(target, bus_sched):
-    time = 0
+    next_time = 0
     while True:
-        time += bus_sched
-        if (time >= target):
-            return time
+        next_time += bus_sched
+        if (next_time >= target):
+            return next_time
     
 
 def split_input(input_data):
@@ -55,9 +72,9 @@ def split_input(input_data):
 
 def read_input(a_file):
     with open(a_file, mode="rt") as f:
-        codelines = f.read().splitlines()
+        lines = f.read().splitlines()
         
-    return codelines
+    return lines
 
 
 if __name__ == "__main__":

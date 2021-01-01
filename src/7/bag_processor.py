@@ -9,7 +9,13 @@ Rules are like:
     muted yellow bags contain 2 shiny gold bags, 9 faded blue bags.
     faded blue bags contain no other bags.
 
+Part 1
+------
 How many colors can, eventually, contain at least one shiny gold bag?
+
+Part 2
+------
+How many bags are required inside the shiny gold bag?
 
 """
 
@@ -66,10 +72,12 @@ def recursive_count(rules, search_bag):
     count = 1
 
     # now get the bags that this bag contains as a dict
+    # E.g. {'dark lime':3, 'muted violet': 4}
     contained_bags = rules[search_bag]
 
     # iterate through the contained bag types, e.g. 'muted yellow'
     for contained_bag in contained_bags:
+        # e.g. for muted violet, we get 4
         qty_contained = int(rules[search_bag][contained_bag])
 
         # and now get the bags contained by this contained bag...
