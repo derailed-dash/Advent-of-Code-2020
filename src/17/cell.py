@@ -15,7 +15,10 @@ class Cell:
         return self.get_coords()[2]
 
     def __str__(self):
-        return ", ".join(str(x) for x in self.get_coords())
+        return ", ".join(str(coord) for coord in self.get_coords())
+
+    def __repr__(self):
+        return (f"{self.__class__.__name__}: ") + ", ".join(str(coord) for coord in self.get_coords()) 
 
     def __eq__(self, other):
         return self.get_coords() == other.get_coords()
@@ -40,6 +43,7 @@ class Cell_4d(Cell):
         return self.get_coords()[3]
 
     def get_neighbours(self):
+        # override
         neighbours = [Cell_4d([self.get_x()+x, self.get_y()+y, self.get_z()+z, self.get_w()+w]) 
                         for x in range(-1, 2) 
                         for y in range(-1, 2) 
