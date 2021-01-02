@@ -35,35 +35,9 @@ class Cell:
         return neighbours
 
 
-class Cell_4d:
-    def __init__(self, coords: list):
-        self._coords = tuple(coords)
-
-    def get_coords(self):
-        return self._coords
-
-    def get_x(self):
-        return self.get_coords()[0]
-
-    def get_y(self):
-        return self.get_coords()[1]
-
-    def get_z(self):
-        return self.get_coords()[2]
-
+class Cell_4d(Cell):
     def get_w(self):
         return self.get_coords()[3]
-
-    def __str__(self):
-        return ", ".join(str(x) for x in self.get_coords())
-
-    def __eq__(self, other):
-        return self.get_coords() == other.get_coords()
-    
-    def __hash__(self):
-        # coords are a tuple.  So return hash of tuple.
-        # we need this if we want to use things like "in <iterator>"
-        return hash(self.get_coords())
 
     def get_neighbours(self):
         neighbours = [Cell_4d([self.get_x()+x, self.get_y()+y, self.get_z()+z, self.get_w()+w]) 

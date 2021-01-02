@@ -1,3 +1,34 @@
+"""
+Author: Darren
+Date: 16/12/2020
+
+Solving: https://adventofcode.com/2020/day/16
+
+Input file contains:
+    - field rules
+    - numbers on my ticket
+    - numbers on nearby tickets
+
+All tickets have field numbers in the same order.
+
+Rule interpretation:
+class: 1-3 or 5-7 means every ticket has a field called class, 
+with valid numbers 1-3 or 5-7, inclusive.
+
+Part 1
+------
+Determine invalid values, i.e. tickets which contain numbers that don't validate against ANY rule
+
+Part 2
+------
+Discard invalid tickets.
+Determine which fields are which, i.e. by checking which fields always match rules.
+Start by determining which fields are invalid for each rule.
+Sort by most invalid fields to least invalid.  The first rule will have only one missing field.
+The difference against ALL fields set will reveal the field that is valid.
+We then add this to the identified fields and positions list.  
+"""
+
 import sys
 import os
 import time
@@ -5,21 +36,15 @@ import re
 from collections import defaultdict
 from pprint import pprint as pp
 
+SCRIPT_DIR = os.path.dirname(__file__) 
 INPUT_FILE = "input/ticket_data.txt"
 SAMPLE_INPUT_FILE = "input/sample_ticket_data.txt"
 
-ADDR_SIZE = 36
-
 
 def main():
-    # get absolute path where script lives
-    script_dir = os.path.dirname(__file__) 
-    print("Script location: " + script_dir)
-
-    # path of input file
-    input_file = os.path.join(script_dir, INPUT_FILE)
-    # input_file = os.path.join(script_dir, SAMPLE_INPUT_FILE)
-    # print("Input file is: " + input_file)
+    input_file = os.path.join(SCRIPT_DIR, INPUT_FILE)
+    # input_file = os.path.join(SCRIPT_DIR, SAMPLE_INPUT_FILE)
+    print("Input file is: " + input_file)
 
     input = read_input(input_file)
     # pp(input)
@@ -35,26 +60,24 @@ def main():
     invalid_values = []
     invalid_values = validate_tickets(nearby_tickets, field_rules)
     print(f"Valid nearby tickets count: {len(nearby_tickets)}")
-    
-    # print(f"Invalid values: {invalid_values}")
     print(f"Sum of invalid values: {sum(invalid_values)}")
 
     fields_and_invalid_positions = get_fields_and_invalid_positions(field_rules, nearby_tickets)
     fields_and_positions = find_position_for_field(field_rules, fields_and_invalid_positions)
-    pp(fields_and_positions)
+    # pp(fields_and_positions)
 
     departure_field_positions = [fields_and_positions[x] for x in fields_and_positions.keys() if x.startswith("departure")]
     print(f"Daparture field positions: {departure_field_positions}")
 
-    field_values = {}
+    my_departure_field_values = {}
     for field in fields_and_positions:
         if (field.startswith("departure")):
-            field_values[field] = my_ticket[fields_and_positions[field]]
+            my_departure_field_values[field] = my_ticket[fields_and_positions[field]]
 
-    pp(field_values)
+    pp(my_departure_field_values)
     product = 1
-    for val in field_values:
-        product *= field_values[val]
+    for val in my_departure_field_values:
+        product *= my_departure_field_values[val]
 
     print(f"Solution answer is the product of departure fields: {product}")   
     
@@ -64,14 +87,21 @@ def process_input(data):
     # seat: 13-40 or 45-50
     field_pattern = re.compile(r"^(\D+): (\d+-\d+) or (\d+-\d+)")
 
+    # store dict that looks like:
+    # { 'field_name': ([n1, n2], [n3, n4]), etc }
     field_rules = {}
+
+    # list of lists, e.g. [[123, 234, 987...], [..., ..., ...]]
     nearby_tickets = []
+
+    # list of ints
     my_ticket = []
 
     current_heading = ""
     for line in data:
         current_line = line.rstrip()
         if (current_heading == ""):
+            # fields section
             match = field_pattern.match(line)
             if match:
                 field_groups = match.groups()
@@ -145,6 +175,7 @@ def find_position_for_field(rules, fields_and_invalid_positions):
 
 
 def validate_tickets(tickets, rules):
+    # remove all invalid tickets, and return all invalid rules
     invalid_values = []
 
     for ticket in tickets.copy():
@@ -157,20 +188,19 @@ def validate_tickets(tickets, rules):
 
 
 def check_all_rules_matched(rules, value):
-    # rule pair looks like
-    # {'seat': ([0, 13], [16,19])}
-    # each rule in in the pair defines a min and max that is allowed
+    # rules made up of many rows like: {'seat': ([0, 13], [16,19]), ...}
+    # each rule is a pair, with each pair defining a min and max that is allowed
     # value must match one or other rule in the pair to be valid   
     for rule_pair in rules.keys():
         rule_part_1 = rules[rule_pair][0]
         rule_part_2 = rules[rule_pair][1]
-        if ((value < rule_part_1[0] or value > rule_part_1[1]) 
-                and (value < rule_part_2[0] or value > rule_part_2[1])):
-            # this rule doesn't match; move onto the next
-            continue
-        else:
+        if ((rule_part_1[0] <= value <= rule_part_1[1]) or 
+                (rule_part_2[0] <= value <= rule_part_2[1])):
             # value matches at least one rule.  Good enough.
             return True
+        else:
+            # this rule doesn't match; move onto the next
+            continue
     
     return False
 

@@ -1,3 +1,25 @@
+"""
+Author: Darren
+Date: 17/12/2020
+
+Solving: https://adventofcode.com/2020/day/17
+
+Solution 1 of 2:
+    This one doesn't scale well to 4D.
+    It builds a grid (dict) of all cells, active and inactive.
+    With each iteration, it must grow all the cells at the edge.
+
+Part 1
+------
+3D space of cubes which are active or inactive.  With each iteration, 
+cells change state according to rules.
+
+Part 2
+------
+As before, but now extends to 4D.
+Literally takes 3 minutes to execute with this method.
+"""
+
 import sys
 import os
 import time

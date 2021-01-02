@@ -1,9 +1,30 @@
+"""
+Author: Darren
+Date: 17/12/2020
+
+Solving: https://adventofcode.com/2020/day/17
+
+Solution 2 of 2:
+    Only stores active cells in the grid.  Much more efficient.
+
+Part 1
+------
+3D space of cubes which are active or inactive.  With each iteration, 
+cells change state according to rules.
+
+Part 2
+------
+As before, but now extends to 4D.
+Reduces execution time from 3 minutes down to ~30s.
+"""
+
 import sys
 import os
 import time
 from cell import *
 from pprint import pprint as pp
 
+SCRIPT_DIR = os.path.dirname(__file__) 
 INPUT_FILE = "input/init_state.txt"
 SAMPLE_INPUT_FILE = "input/sample_init_state.txt"
 
@@ -12,13 +33,8 @@ CYCLES = 6
 
 
 def main():
-    # get absolute path where script lives
-    script_dir = os.path.dirname(__file__) 
-    print("Script location: " + script_dir)
-
-    # path of input file
-    input_file = os.path.join(script_dir, INPUT_FILE)
-    # input_file = os.path.join(script_dir, SAMPLE_INPUT_FILE)
+    input_file = os.path.join(SCRIPT_DIR, INPUT_FILE)
+    # input_file = os.path.join(SCRIPT_DIR, SAMPLE_INPUT_FILE)
     print("Input file is: " + input_file)
 
     input = read_input(input_file)
