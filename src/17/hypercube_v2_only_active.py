@@ -7,6 +7,7 @@ Solving: https://adventofcode.com/2020/day/17
 Solution 2 of 2:
     Only stores active cells in the grid.  Much more efficient.
     Reduces execution time from 3 minutes down to ~30s using CPython, and about 5s using PyPy.
+    Added some visualisation to part 1.
 
 Part 1
 ------
@@ -27,6 +28,9 @@ As before, but now extends to 4D.
 import sys
 import os
 import time
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 from cell import *
 from pprint import pprint as pp
 
@@ -50,6 +54,7 @@ def main():
     process_init(input, grid)
     for i in range(CYCLES):
         print(f"Cycle {i}:")
+        # show_grid(grid)
         grid = execute_cycle(grid)
 
     print(f"Sum active: {len(grid)}")
@@ -63,6 +68,54 @@ def main():
 
     print(f"Sum active: {len(grid)}")
 
+
+def show_grid(grid):
+    x_vals = [cell.get_x() for cell in grid]
+    y_vals = [cell.get_y() for cell in grid]
+    z_vals = [cell.get_z() for cell in grid]
+
+    min_x_add = 0
+    min_y_add = 0
+    min_z_add = 0
+
+    min_x = min(x_vals)
+    min_y = min(y_vals)
+    min_z = min(z_vals)
+
+    # we need to get rid of negative coords, since numpy doesn't support -ve values for indexes
+    if min_x < 0:
+        min_x_add = 0 - min_x
+    if min_y < 0:
+        min_y_add = 0 - min_y
+    if min_z < 0:
+        min_z_add = 0 - min_z        
+
+    x_size = (max(x_vals) + 1) - min(x_vals)
+    y_size = (max(y_vals) + 1) - min(y_vals)
+    z_size = (max(z_vals) + 1) - min(z_vals)
+    xyz = np.zeros((x_size, y_size, z_size))
+    for cell in grid:
+        x = cell.get_x() + min_x_add
+        y = cell.get_y() + min_y_add
+        z = cell.get_z() + min_z_add
+
+        xyz[x, y, z] = 1
+
+    fig = plt.figure()
+    ax = plt.axes(projection='3d')
+    for index, active in np.ndenumerate(xyz):
+        if active == 1:
+            ax.scatter3D(*index, c='blue', marker='s', s=200, alpha=0.7)
+        else:
+            ax.scatter3D(*index, c='yellow', marker='s', s=200, alpha=0.7)
+
+    ax.set_xlabel('x')
+    ax.set_ylabel('y')
+    ax.set_zlabel('z')
+    ax.set_title('Cells')
+
+    plt.show()
+    
 
 def execute_cycle(grid):
     cells_to_add = set()

@@ -1,3 +1,9 @@
+"""
+Author: Darren
+Date: 19/12/2020
+
+Solving: https://adventofcode.com/2020/day/19
+"""
 import sys
 import os
 import time

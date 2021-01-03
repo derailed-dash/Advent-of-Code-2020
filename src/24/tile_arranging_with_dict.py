@@ -1,3 +1,36 @@
+"""
+Author: Darren
+Date: 24/12/2020
+
+Solving: https://adventofcode.com/2020/day/24
+
+Floor of hexagonal tiles.  They have two sides: white and black.
+Tiles start white side up.
+
+Part 1
+------
+Coordinate system that describes tiles to be flipped.  Each row describes coords to a single tile.
+Always start at reference tile (tile 0) and then follow coord instructions in an input row.
+Coords are ne, e, se, sw, w, nw.  E.g.
+sesenwnenenewseeswwswswwnenewsewsw
+
+How many tiles end up black side up?
+
+Part 2
+------
+Conway-like rules, that flip certain tiles (simultaneously) with each iteration.  Rules:
+    - Any black tile with zero or more than 2 black tiles immediately adjacent to it is flipped to white.
+    - Any white tile with exactly 2 black tiles immediately adjacent to it is flipped to black.
+
+Solution 1
+----------
+Let's use x,y coords to describe tile locations.
+Hexagon class stores its colour, and knows how to get adjacent vectors, and how to get neighbours.
+Tiles are stored as a dict of coord, tile, where tile can be b or w.
+With each iteration:
+    Pad tile dict to account for edge effects.
+    Loop through all tiles.  Find neighbours for each.  Count black neighbours.  Flip accordingly.
+"""
 
 import sys
 import os
@@ -20,7 +53,7 @@ def main():
     print("Input file is: " + input_file)
     data = read_input(input_file)
 
-    tiles = proces_tile_positions(data)
+    tiles = process_tile_positions(data)
     black_tiles = sum(hex.get_colour() == 'b' for hex in tiles.values())
     print(f"Sum of black tiles: {black_tiles}")
 
@@ -86,10 +119,11 @@ def read_input(a_file):
     return data
 
 
-def proces_tile_positions(data):
+def process_tile_positions(data):
+    ''' Return all tiles at the referenced positions '''
     tokenizer = re.compile(r'(ne|e|se|sw|w|nw)')
 
-    # store tiles as { [x,y]: 'b', [x,y]: 'w', etc}
+    # store tiles as { [x,y]: Hexagon('b'), [x,y]: Hexagon('w'), etc}
     tiles = {}
 
     for tile in data:
@@ -97,22 +131,9 @@ def proces_tile_positions(data):
         location_x = 0
         location_y = 0
         for token in tokens:
-            if token == 'ne':
-                location_x += 1
-                location_y += 1
-            elif token == 'e':
-                location_x += 2
-            elif token == 'se':
-                location_x += 1
-                location_y -= 1
-            elif token == 'sw':
-                location_x -= 1
-                location_y -= 1
-            elif token == 'w':
-                location_x -= 2
-            elif token == 'nw':
-                location_x -= 1
-                location_y += 1
+            vector = Hexagon.get_vector(token)
+            location_x += vector[0]
+            location_y += vector[1]
         
         target_location = tuple([location_x, location_y])
         if target_location not in tiles:

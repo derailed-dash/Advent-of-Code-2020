@@ -1,3 +1,22 @@
+"""
+Author: Darren
+Date: 18/12/2020
+
+Solving: https://adventofcode.com/2020/day/18
+
+Solution 2 of 2:
+Override the int class, so - now does multiplication, and * now does addition.
+
+Part 1
+------
+Rather than evaluating multiplication before addition, 
+the operators have the same precedence, and are evaluated left-to-right 
+regardless of the order in which they appear.
+
+Part 2
+------
+Addition is evaluated before multiplication.
+"""
 import sys
 import os
 import re
@@ -5,6 +24,7 @@ import sys
 import time
 from pprint import pprint as pp
 
+SCRIPT_DIR = os.path.dirname(__file__) 
 INPUT_FILE = "input/math_puzzle.txt"
 SAMPLE_INPUT_FILE = "input/test_math_puzzle.txt"
 
@@ -24,15 +44,8 @@ class I(int):
 
 
 def main():
-    # get absolute path where script lives
-    script_dir = os.path.dirname(__file__) 
-    print("Script location: " + script_dir)
-
-    # path of input file
-    input_file = os.path.join(script_dir, INPUT_FILE)
-    # input_file = os.path.join(script_dir, SAMPLE_INPUT_FILE)
-    print("Input file is: " + input_file)
-
+    input_file = os.path.join(SCRIPT_DIR, INPUT_FILE)
+    # input_file = os.path.join(SCRIPT_DIR, SAMPLE_INPUT_FILE)
     input = read_input(input_file)
 
     # replace every digit n with I(n)
