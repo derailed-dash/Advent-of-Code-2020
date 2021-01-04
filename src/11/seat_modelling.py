@@ -5,6 +5,17 @@ Date: 12/12/2020
 Solving: https://adventofcode.com/2020/day/11
 
 Modelling people sitting on seats.
+If current seat is empty and no adjacent (or visible) seats are filled, the seat is filled.
+If the seat is filled and n or more adjacent (or visible) seats are filled, the seat becomes empty.
+
+Part 1
+------
+Looking for steady state using adjacent seats.
+
+Part 2
+------
+Looking for steady state using 'visible' seats.
+
 """
 
 import sys
@@ -12,6 +23,7 @@ import os
 import time
 from pprint import pprint as pp
 
+SCRIPT_DIR = os.path.dirname(__file__) 
 INPUT_FILE = "input/seating.txt"
 SAMPLE_INPUT_FILE = "input/sample_seating.txt"
 
@@ -32,13 +44,8 @@ SEATS_TO_TEST = {
 }
 
 def main():
-    # get absolute path where script lives
-    script_dir = os.path.dirname(__file__) 
-    print("Script location: " + script_dir)
-
-    # path of input file
-    input_file = os.path.join(script_dir, INPUT_FILE)
-    # input_file = os.path.join(script_dir, SAMPLE_INPUT_FILE)
+    input_file = os.path.join(SCRIPT_DIR, INPUT_FILE)
+    # input_file = os.path.join(SCRIPT_DIR, SAMPLE_INPUT_FILE)
     print("Input file is: " + input_file)
     seating = read_input(input_file)
     # pp (seating)

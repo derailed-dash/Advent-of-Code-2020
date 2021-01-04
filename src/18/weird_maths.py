@@ -1,21 +1,40 @@
+"""
+Author: Darren
+Date: 17/12/2020
+
+Solving: https://adventofcode.com/2020/day/17
+
+Solution 1 of 2:
+    Regex to process each line as digits and operators (tokens)
+    Recursively eliminate brackets, each time evaluating inside the brackets, until it evaluates to a value.
+    Then, perform addition over multiplication using a simple state machine that performs the addition loop first.
+    The addition loop strips out all x+y and replaces with the evaluated results.
+    Finally, the multiplication loop does what's left.
+
+Part 1
+------
+Rather than evaluating multiplication before addition, 
+the operators have the same precedence, and are evaluated left-to-right 
+regardless of the order in which they appear.
+
+Part 2
+------
+Addition is evaluated before multiplication.
+"""
 import sys
 import os
 import time
 import re
 from pprint import pprint as pp
 
+SCRIPT_DIR = os.path.dirname(__file__) 
 INPUT_FILE = "input/math_puzzle.txt"
 SAMPLE_INPUT_FILE = "input/test_math_puzzle.txt"
 
 
 def main():
-    # get absolute path where script lives
-    script_dir = os.path.dirname(__file__) 
-    print("Script location: " + script_dir)
-
-    # path of input file
-    input_file = os.path.join(script_dir, INPUT_FILE)
-    # input_file = os.path.join(script_dir, SAMPLE_INPUT_FILE)
+    input_file = os.path.join(SCRIPT_DIR, INPUT_FILE)
+    # input_file = os.path.join(SCRIPT_DIR, SAMPLE_INPUT_FILE)
     print("Input file is: " + input_file)
 
     input = read_input(input_file)
@@ -66,6 +85,7 @@ def process_weird_expr(expr_tokens):
 def process_inner_expression_add_over_prod(expr_tokens):
     # do addition first
     # iterate until we've done all the additions
+    # replace x+y tokens with the evaluation as we go
     while "+" in expr_tokens:
         left_num = None
         right_num = None
@@ -100,26 +120,17 @@ def process_inner_expression_add_over_prod(expr_tokens):
 
         # print(f"Intermediate: {''.join(expr_tokens)}")
     
-    # now multiplication
+    # now multiplication; there should be no + left at this point
     left_num = None
     right_num = None
-    op = ""
-    sum = 0
     for token in expr_tokens:
         if token.isdigit():
             if (left_num) == None:
                 left_num = int(token)
             else:
                 right_num = int(token)
-                if op == "add":
-                    left_num = left_num + right_num
-                elif op == "prod":
-                    left_num = left_num * right_num
+                left_num = left_num * right_num
 
-        elif token == "+":
-            op = "add"
-        elif token == "*":
-            op = "prod"
     return left_num
 
 
