@@ -53,19 +53,18 @@ SCRIPT_DIR = os.path.dirname(__file__)
 INPUT_FILE = "input/data.txt"
 SAMPLE_INPUT_FILE = "input/sample_data.txt"
 
-NUMBER_OF_ITERATIONS = 100
+NUMBER_OF_ITERATIONS = 10
 
 # enable if you want to create an animation
-ANIM_ENABLED = False
+ANIM_ENABLED = True
 OUTPUT_DIR = os.path.join(SCRIPT_DIR, "output/")
 ANIM_FILE = os.path.join(OUTPUT_DIR, "tile_anim.gif")
-file_counter = 0
 anim_frame_files = []
 
 
 def main():
-    input_file = os.path.join(SCRIPT_DIR, INPUT_FILE)
-    # input_file = os.path.join(SCRIPT_DIR, SAMPLE_INPUT_FILE)
+    # input_file = os.path.join(SCRIPT_DIR, INPUT_FILE)
+    input_file = os.path.join(SCRIPT_DIR, SAMPLE_INPUT_FILE)
     print("Input file is: " + input_file)
     data = read_input(input_file)
 
@@ -75,21 +74,20 @@ def main():
     living_art(black_tiles, NUMBER_OF_ITERATIONS)
     print(f"Sum of black tiles: {len(black_tiles)}")
 
-    if ANIM_ENABLED:
-        if (NUMBER_OF_ITERATIONS > 15):
-            print("You probably ought to reduce the number of iterations!")
-        else:
-            build_anim()
+    if is_vis_enabled:
+        build_anim()
+    else:
+        print("Visualisation disabled.")
 
+
+def is_vis_enabled():
+    return ANIM_ENABLED and NUMBER_OF_ITERATIONS <= 15
 
 def pad_all_tiles(black_tiles, all_tiles):
     min_x = min(black_tiles, key=lambda x: x[0])[0]
     max_x = max(black_tiles, key=lambda x: x[0])[0]
     min_y = min(black_tiles, key=lambda x: x[1])[1]
     max_y = max(black_tiles, key=lambda x: x[1])[1]
-
-    #print(f"Min, max x: {min_x}, {max_x}")
-    #print(f"Min, max y: {min_y}, {max_y}")
 
     # Note, we have to go 2 either side for x, since e and w coords are +/- 2 on x axis.
     for x in range(min_x - 2, max_x + 3):
@@ -105,8 +103,6 @@ def pad_all_tiles(black_tiles, all_tiles):
 
 
 def vis_state(black_tiles, all_tiles, iteration):
-    global file_counter
-
     white_tiles = all_tiles.difference(black_tiles)
 
     min_x = min(all_tiles, key=lambda x: x[0])[0]
@@ -136,7 +132,9 @@ def vis_state(black_tiles, all_tiles, iteration):
     fig.canvas.draw()
     sz = ((ax.get_window_extent().width / (max_x-min_x) * (134/fig.dpi)) ** 2)
 
+    # make sure the ticks have integer values
     ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+    
     ax.scatter(black_x, black_y, marker=shape, s=sz, color='black', edgecolors='black')
     ax.scatter(white_x, white_y, marker=shape, s=sz, color='white', edgecolors='black')
     ax.set_title(f"Tile Floor, Iteration: {iteration-1}")
@@ -144,14 +142,15 @@ def vis_state(black_tiles, all_tiles, iteration):
     if not os.path.exists(OUTPUT_DIR):
         os.makedirs(OUTPUT_DIR)
 
-    filename = OUTPUT_DIR + "tiles_anim_" + str(file_counter) + ".png"
+    # save the plot as a frame
+    filename = OUTPUT_DIR + "tiles_anim_" + str(iteration) + ".png"
     plt.savefig(filename)
     anim_frame_files.append(filename)
-    file_counter += 1
+    # plt.show()
 
 
 def build_anim():
-    with imageio.get_writer(ANIM_FILE, mode='I', fps=1) as writer:
+    with imageio.get_writer(ANIM_FILE, mode='I', fps=0.75) as writer:
         for filename in anim_frame_files:
             image = imageio.imread(filename)
             writer.append_data(image)
