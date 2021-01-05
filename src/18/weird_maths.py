@@ -2,9 +2,9 @@
 Author: Darren
 Date: 17/12/2020
 
-Solving: https://adventofcode.com/2020/day/17
+Solving: https://adventofcode.com/2020/day/18
 
-Solution 1 of 2:
+Solution 1 of 3:
     Regex to process each line as digits and operators (tokens)
     Recursively eliminate brackets, each time evaluating inside the brackets, until it evaluates to a value.
     Then, perform addition over multiplication using a simple state machine that performs the addition loop first.

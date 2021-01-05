@@ -4,7 +4,7 @@ Date: 18/12/2020
 
 Solving: https://adventofcode.com/2020/day/18
 
-Solution 2 of 2:
+Solution 2 of 3:
 Override the int class, so - now does multiplication, and * now does addition.
 
 Part 1
@@ -44,8 +44,8 @@ class I(int):
 
 
 def main():
-    input_file = os.path.join(SCRIPT_DIR, INPUT_FILE)
-    # input_file = os.path.join(SCRIPT_DIR, SAMPLE_INPUT_FILE)
+    # input_file = os.path.join(SCRIPT_DIR, INPUT_FILE)
+    input_file = os.path.join(SCRIPT_DIR, SAMPLE_INPUT_FILE)
     input = read_input(input_file)
 
     # replace every digit n with I(n)

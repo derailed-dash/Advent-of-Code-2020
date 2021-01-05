@@ -124,7 +124,7 @@ def vis_state(black_tiles, all_tiles, iteration):
     ax.set_xlim(min_x-1, max_x+1)
     ax.set_ylim(min_y-1, max_y+1)
 
-    # we want x axis compressed, given how hex geometry.
+    # we want x axis compressed, given our hex geometry.
     # I.e. given that e or w = 2 units.
     ax.set_aspect(1.75)
 
@@ -145,8 +145,8 @@ def vis_state(black_tiles, all_tiles, iteration):
     # save the plot as a frame
     filename = OUTPUT_DIR + "tiles_anim_" + str(iteration) + ".png"
     plt.savefig(filename)
-    anim_frame_files.append(filename)
     # plt.show()
+    anim_frame_files.append(filename)
 
 
 def build_anim():
