@@ -1,6 +1,6 @@
 """
 Author: Darren
-Date: 17/12/2020
+Date: 18/12/2020
 
 Solving: https://adventofcode.com/2020/day/18
 
