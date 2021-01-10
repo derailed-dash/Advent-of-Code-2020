@@ -3,6 +3,27 @@ Author: Darren
 Date: 19/12/2020
 
 Solving: https://adventofcode.com/2020/day/19
+
+Input is a block of rules followed by a block of messages.  E.g.
+0: 4 1 5
+1: 2 3 | 3 2
+2: 4 4 | 5 5
+3: 4 5 | 5 4
+4: "a"
+5: "b"
+
+ababbb
+bababa
+abbbab
+aaabbb
+aaaabbb
+
+Solution 1 of 2:
+    Use a recursive method that recurses lists of rules.
+    At the bottom of the recursion, it replaces a rule number with a rule letter.
+    Each rule is processed by popping the next rule off the stack, and comparing with the current char.
+    If we're at the bottom of the recursion and matching a letter successfully, 
+    we move on to the next character in the string, and match against the remainder of the stack.
 """
 import sys
 import os
@@ -10,17 +31,13 @@ import time
 import re
 from pprint import pprint as pp
 
+SCRIPT_DIR = os.path.dirname(__file__) 
 INPUT_FILE = "input/data.txt"
 SAMPLE_INPUT_FILE = "input/sample_data.txt"
 
 def main():
-    # get absolute path where script lives
-    script_dir = os.path.dirname(__file__) 
-    print("Script location: " + script_dir)
-
-    # path of input file
-    input_file = os.path.join(script_dir, INPUT_FILE)
-    # input_file = os.path.join(script_dir, SAMPLE_INPUT_FILE)
+    input_file = os.path.join(SCRIPT_DIR, INPUT_FILE)
+    # input_file = os.path.join(SCRIPT_DIR, SAMPLE_INPUT_FILE)
     print("Input file is: " + input_file)
 
     input = read_input(input_file)
@@ -122,7 +139,7 @@ def validate(msg, rule_stack, rules):
     # E.g. if we pop 3, 1, 2, we'll get 2.
     current_rule = rule_stack.pop()
 
-    # If the rule is a string, we've reached the 'top'
+    # If the rule is a string, we've reached the 'bottom'
     # Otherwise, we need to recurse to the matching rule
     if isinstance(current_rule, str):
         # check whether first char of msg matches the rule str
@@ -158,6 +175,3 @@ if __name__ == "__main__":
     main()
     t2 = time.perf_counter()
     print(f"Execution time: {t2 - t1:0.4f} seconds")
-
-
-
