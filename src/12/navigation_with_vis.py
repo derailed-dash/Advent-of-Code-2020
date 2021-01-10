@@ -37,7 +37,7 @@ from pprint import pprint as pp
 SCRIPT_DIR = os.path.dirname(__file__) 
 INPUT_FILE = "input/nav.txt"
 SAMPLE_INPUT_FILE = "input/sample_nav.txt"
-OUTPUT_DIR = "output/"
+OUTPUT_DIR = os.path.join(SCRIPT_DIR, "output/")
 
 X = "X"
 Y = "Y"
@@ -101,7 +101,9 @@ def draw_graph(coords_visited, output_file):
     plt.plot(x_coords, y_coords, color="green", marker="o", markerfacecolor="red", markersize=5)
     plt.title("Ferry Movement")
 
-    output_plot_file = os.path.join(SCRIPT_DIR, OUTPUT_DIR, output_file)
+    if not os.path.exists(OUTPUT_DIR):
+        os.makedirs(OUTPUT_DIR)
+    output_plot_file = os.path.join(OUTPUT_DIR, output_file)
     print("Output plot file is: " + output_plot_file)
     # if we want to show interactive view...
     # plt.show()

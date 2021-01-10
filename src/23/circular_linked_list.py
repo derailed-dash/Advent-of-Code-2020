@@ -16,7 +16,7 @@ class Node(object):
         return str(self._data)
 
     def __repr__(self):
-        return str(self._data)
+        return f"{self.__class__.__name__}: " + self._data
 
 
 class Circular_Linked_List(object):
