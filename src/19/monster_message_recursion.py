@@ -139,7 +139,7 @@ def validate(msg, rule_stack, rules):
     # E.g. if we pop 3, 1, 2, we'll get 2.
     current_rule = rule_stack.pop()
 
-    # If the rule is a string, we've reached the 'bottom'
+    # If the rule is a string (e.g. 'a' or 'b'), we've reached the 'bottom'
     # Otherwise, we need to recurse to the matching rule
     if isinstance(current_rule, str):
         # check whether first char of msg matches the rule str

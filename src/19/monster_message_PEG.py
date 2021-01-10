@@ -23,9 +23,10 @@ Solution 2 of 2:
     The PEG grammar contains all the rules necessary for recursive parsing.  No validation code required.
 
 Part 2:
-    Replace rules 8 and 11, resulting in loops in the rules, which could result in infinite recursion.
-    8: 42 | 42 8
-    11: 42 31 | 42 11 3
+    Replace rules 8 and 11, resulting in self-referential loops in the rules, 
+    which could result in infinite recursion.
+    8: 42 | 42 8    - i.e. 42 can repeat
+    11: 42 31 | 42 11 31  - i.e. can result in repeating (42 31), or (42 (42 31)+ 31)
 """
 import sys
 import os
