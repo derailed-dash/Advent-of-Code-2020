@@ -18,6 +18,7 @@ import sys
 import os
 import time
 import re
+from typing import List, Tuple
 from itertools import combinations
 from math import prod as prod
 
@@ -44,14 +45,26 @@ def main():
     print(f"And the product is: " + str(prod(terms)))
 
 
-def determine_terms(entries, target, num_terms):
+def determine_terms(entries: List[int], target: int, num_terms: int) -> tuple:
+    """ Determine combination of terms that add up to the target
+
+    Args:
+        entries ([list]): List of int values
+        target ([int]): The target sum of any n terms
+        num_terms ([int]): The number of terms, n, that must add up to the target
+
+    Returns:
+        [type]: [description]
+    """
     for num_list in combinations(entries, num_terms):
         the_sum = sum(num_list)
         if the_sum == target:
             return num_list
 
+    return ()
 
-def read_input(a_file):
+
+def read_input(a_file) -> List[int]:
     with open(a_file, mode="rt") as f:
         entries_list = [int(x) for x in f.read().splitlines()]
 

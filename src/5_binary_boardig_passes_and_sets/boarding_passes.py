@@ -1,4 +1,5 @@
-""" boarding_passes.py
+""" 
+boarding_passes.py
 Author: Darren
 Date: 07/12/2020
 
@@ -6,9 +7,7 @@ Solving https://adventofcode.com/2020/day/5
 
 Process boarding passes, which can contain seat codes in format RRRRRRRCCC.
 Seat code is binary, where R (row) can be F or B and C (column) can be L or R.
-
 """
-
 import sys
 import os
 import time
