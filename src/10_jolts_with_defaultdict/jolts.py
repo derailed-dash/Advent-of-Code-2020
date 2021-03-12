@@ -12,11 +12,9 @@ Our device is rated 3 jolts higher than any adapter in the bag.
 Part 1: create a chain of all joltage adapters, and determine jolt differences.
 Part 2: find all combinations where the difference between adapters is 3 jolts or less
 """
-
-import sys
 import os
 import time
-from collections import defaultdict, deque
+from collections import defaultdict
 from pprint import pprint as pp
 
 INPUT_FILE = "input/jolts.txt"
@@ -49,7 +47,7 @@ def main():
     print(f"Max permutations: {adapter_permutations}")
 
 
-def find_adapter_permutations(seq):
+def find_adapter_permutations(seq: list):
     # seed with entry for 0 permutations that only includes the charging point
     solutions = {0: 1}
 
@@ -77,7 +75,7 @@ def find_adapter_permutations(seq):
     return solutions[max(seq)]
 
 
-def process_differences(seq):
+def process_differences(seq: list) -> defaultdict:
     """
     Build a dict that maps jolt differences to the number of occurences of that difference
     """

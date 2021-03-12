@@ -17,11 +17,8 @@ Part 2
 Looking for steady state using 'visible' seats.
 
 """
-
-import sys
 import os
 import time
-from pprint import pprint as pp
 
 SCRIPT_DIR = os.path.dirname(__file__) 
 INPUT_FILE = "input/seating.txt"

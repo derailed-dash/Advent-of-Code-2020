@@ -3,12 +3,14 @@ Author: Darren
 Date: 09/12/2020
 
 Solving: https://adventofcode.com/2020/day/8
-"""
 
-import sys
+Read instructions like:
+nop +0
+acc +1
+jmp +4
+"""
 import os
 import time
-from pprint import pprint as pp
 
 BOOT_CODE_INPUT_FILE = "input/bootcode.txt"
 SAMPLE_BOOT_CODE_INPUT_FILE = "input/sample_code.txt"
@@ -70,7 +72,7 @@ def get_line(a_ptr):
     return a_ptr + 1
     
 
-def run_code(code):
+def run_code(code: list):
     global accumulator
 
     accumulator = 0
@@ -94,7 +96,7 @@ def run_code(code):
         instruction_ptr = process_instruction(code, instruction_ptr)
 
 
-def process_instruction(code, ptr):
+def process_instruction(code: list, ptr: int) -> int:
     global accumulator
 
     instruction, value = code[ptr]
@@ -111,7 +113,7 @@ def process_instruction(code, ptr):
     return ptr
 
 
-def read_input(a_file):
+def read_input(a_file) -> list:
     with open(a_file, mode="rt") as f:
         codelines = f.read().splitlines()
         

@@ -10,13 +10,10 @@ User itertools.combinations() to identify any two numbers that add up to latest 
 Part 1 is to find the first invalid number.
 Part 2 is to find a contiguous set of numbers that add up to the invalid number.
 """
-
-import sys
 import os
 import time
 from collections import deque
 from itertools import combinations
-from pprint import pprint as pp
 
 SEQUENCE_INPUT_FILE = "input/sequence.txt"
 SAMPLE_SEQUENCE_INPUT_FILE = "input/test_sequence.txt"
@@ -51,14 +48,14 @@ def find_contiguous_block(num, seq):
 
     # define function for inner loop.  Use a function so we can return from it.
     # This allows us to 'continue' outer loop, rather than inner loop.
-    def inner(i, sum):
+    def inner(i, the_sum):
         for j in range(i+1, len(seq)):
-            sum += seq[j]
-            if sum > num:
+            the_sum += seq[j]
+            if the_sum > num:
                 # we've gone bust, so try next outer
                 return False
             
-            if sum == num:
+            if the_sum == num:
                 # store start and end indexes in seq
                 limits.append(i)
                 limits.append(j)
@@ -67,8 +64,8 @@ def find_contiguous_block(num, seq):
 
     # try first number in contiguous block
     for i in range(0, len(seq)):
-        sum = seq[i]
-        if inner(i, sum):
+        the_sum = seq[i]
+        if inner(i, the_sum):
             # we've found our contiguous numbers.  We can finish now.
             break
     
