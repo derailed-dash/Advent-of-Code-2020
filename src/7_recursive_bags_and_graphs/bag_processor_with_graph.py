@@ -21,7 +21,6 @@ Solution 2 of 2:
     Instead of using recursive functions, build a NetworkX graph
     and use this to determine all ancesters.
 """
-
 import sys
 import os
 import time
@@ -29,7 +28,6 @@ import re
 import matplotlib.pyplot as plt
 import networkx as nx
 from collections import defaultdict
-from pprint import pprint as pp
 
 SCRIPT_DIR = os.path.dirname(__file__) 
 BAG_RULES_INPUT_FILE = "input/bag_rules.txt"

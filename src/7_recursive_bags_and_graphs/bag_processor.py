@@ -18,7 +18,6 @@ Part 2
 How many bags are required inside the shiny gold bag?
 
 """
-
 import sys
 import os
 import time
