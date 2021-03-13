@@ -28,12 +28,9 @@ Instead, mask updates the memory address to be written.
     If the bitmask bit is X, the corresponding memory address bit is floating.
         Floating bits can be both 1 and 0.
 """
-
-import sys
 import os
 import time
 import re
-from pprint import pprint as pp
 
 SCRIPT_DIR = os.path.dirname(__file__)
 INPUT_FILE = "input/docking_program.txt"

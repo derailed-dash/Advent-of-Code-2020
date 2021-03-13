@@ -18,12 +18,9 @@ x departure times and IDs are irrelevant.
 Schedules are always prime. So easy to find schedules that align using LCM if any two schedules,
 which is always the product of two schedules.
 """
-
-import sys
 import os
 import time
 from math import gcd
-from operator import itemgetter
 from pprint import pprint as pp
 
 SCRIPT_DIR = os.path.dirname(__file__) 
