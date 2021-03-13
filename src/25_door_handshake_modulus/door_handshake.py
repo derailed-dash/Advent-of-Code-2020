@@ -1,8 +1,5 @@
-
-import sys
 import os
 import time
-from pprint import pprint as pp
 
 INPUT_FILE = "input/data.txt"
 SAMPLE_INPUT_FILE = "input/sample_data.txt"
@@ -63,6 +60,3 @@ if __name__ == "__main__":
     main()
     t2 = time.perf_counter()
     print(f"Execution time: {t2 - t1:0.4f} seconds")
-
-
-

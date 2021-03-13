@@ -21,7 +21,6 @@ Part 2
 ------
 Addition is evaluated before multiplication.
 """
-import sys
 import os
 import time
 import re
@@ -38,7 +37,6 @@ def main():
     print("Input file is: " + input_file)
 
     input = read_input(input_file)
-    # pp(input)
     
     results = process_input(input)
     pp(results)
@@ -90,10 +88,10 @@ def process_inner_expression_add_over_prod(expr_tokens):
         left_num = None
         right_num = None
         op = ""
-        sum = 0
+        the_sum = 0
         for i, token in enumerate(expr_tokens):
             if token.isdigit():
-                if (left_num) == None:
+                if left_num is None:
                     left_num = int(token)
                     left_posn = i
                 else:
@@ -101,10 +99,10 @@ def process_inner_expression_add_over_prod(expr_tokens):
                     right_posn = i
 
                     if op == "add":
-                        sum = left_num + right_num
+                        the_sum = left_num + right_num
 
                         # substite sum for the previous terms
-                        expr_tokens[left_posn:right_posn+1] = [str(sum)]
+                        expr_tokens[left_posn:right_posn+1] = [str(the_sum)]
 
                         # break out of this loop and start next iteration
                         # otherwise we're continuing to process a list we've modified!
@@ -125,7 +123,7 @@ def process_inner_expression_add_over_prod(expr_tokens):
     right_num = None
     for token in expr_tokens:
         if token.isdigit():
-            if (left_num) == None:
+            if left_num is None:
                 left_num = int(token)
             else:
                 right_num = int(token)
@@ -140,7 +138,7 @@ def process_inner_expression(expr_tokens):
     op = ""
     for token in expr_tokens:
         if token.isdigit():
-            if (left_num) == None:
+            if left_num is None:
                 left_num = int(token)
             else:
                 right_num = int(token)
@@ -165,7 +163,7 @@ def convert_inner_expressions(expr_tokens):
         for i, token in enumerate(expr_tokens):
             if token == "(":
                 # see if this is the first bracket
-                if outside_left_bracket == None:
+                if outside_left_bracket is None:
                     outside_left_bracket = i
 
                 # increment out bracket counter
@@ -204,6 +202,3 @@ if __name__ == "__main__":
     main()
     t2 = time.perf_counter()
     print(f"Execution time: {t2 - t1:0.4f} seconds")
-
-
-

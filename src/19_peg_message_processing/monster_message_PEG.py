@@ -28,7 +28,6 @@ Part 2:
     8: 42 | 42 8    - i.e. 42 can repeat
     11: 42 31 | 42 11 31  - i.e. can result in repeating (42 31), or (42 (42 31)+ 31)
 """
-import sys
 import os
 import time
 import re

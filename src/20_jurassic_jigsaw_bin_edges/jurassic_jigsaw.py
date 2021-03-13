@@ -1,4 +1,3 @@
-import sys
 import os
 import time
 import re
@@ -130,7 +129,7 @@ def build_map(tiles, corners):
         if len(current_tile_row) == 1:
             # set to None if we don't find a match. I.e if we're on the last row.
             next_tile_down = None
-            current_tile_bottom_value = current_tile.edge_value(current_tile.get_bottom_edge())
+            current_tile_bottom_value = Tile.edge_value(current_tile.get_bottom_edge())
             for other_tile_id in other_tiles:
                 other_tile = tiles[other_tile_id]
                 if current_tile_bottom_value in other_tile.get_edge_values():
@@ -146,7 +145,7 @@ def build_map(tiles, corners):
                                                        
 
         # look for tile that matches our current right edge
-        current_tile_right_value = current_tile.edge_value(current_tile.get_right_edge())
+        current_tile_right_value = Tile.edge_value(current_tile.get_right_edge())
         for other_tile_id in other_tiles:
             other_tile = tiles[other_tile_id]
             if current_tile_right_value in other_tile.get_edge_values():
@@ -195,8 +194,8 @@ def find_first_corner(corners, tiles):
         other_tiles_ids.remove(current_tile_id)
 
         right_and_bottom = []
-        right_and_bottom.append(current_tile.edge_value(current_tile.get_right_edge()))
-        right_and_bottom.append(current_tile.edge_value(current_tile.get_bottom_edge()))
+        right_and_bottom.append(Tile.edge_value(current_tile.get_right_edge()))
+        right_and_bottom.append(Tile.edge_value(current_tile.get_bottom_edge()))
 
         matched_edges = 0
         for other_tile_id in other_tiles_ids:
@@ -209,13 +208,13 @@ def find_first_corner(corners, tiles):
             break
     return corner
 
+
 def get_corners(tiles):
     corners = []
 
     tile_ids = list(tiles.keys())
 
-    for i in range(len(tile_ids)):
-        tile_id = tile_ids[i]
+    for _, tile_id in enumerate(tile_ids):
         current_tile = tiles[tile_id]
 
         count_matches = 0
@@ -275,6 +274,3 @@ if __name__ == "__main__":
     main()
     t2 = time.perf_counter()
     print(f"Execution time: {t2 - t1:0.4f} seconds")
-
-
-

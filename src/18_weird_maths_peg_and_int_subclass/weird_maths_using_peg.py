@@ -22,13 +22,10 @@ Part 2
 ------
 Addition is evaluated before multiplication.
 """
-import sys
 import os
 import time
-import re
 import math
 from parsimonious import Grammar, NodeVisitor
-from pprint import pprint as pp
 
 
 class WeirdMathVisitor(NodeVisitor):
@@ -136,4 +133,3 @@ if __name__ == "__main__":
     main()
     t2 = time.perf_counter()
     print(f"Execution time: {t2 - t1:0.4f} seconds")
-

@@ -1,8 +1,6 @@
-import sys
 import os
 import time
 import re
-from pprint import pprint as pp
 from collections import defaultdict
 
 INPUT_FILE = "input/data.txt"
@@ -17,12 +15,11 @@ def main():
     input_file = os.path.join(script_dir, INPUT_FILE)
     # input_file = os.path.join(script_dir, SAMPLE_INPUT_FILE)
     print("Input file is: " + input_file)
-
+   
     data = read_input(input_file)
     # print(data)
 
     combos = init_combos(data)
-    # pp(combos)
 
     refined_candidates, not_candidates = process_combos(combos)
     not_candidate_occurences = 0
@@ -126,6 +123,4 @@ if __name__ == "__main__":
     main()
     t2 = time.perf_counter()
     print(f"Execution time: {t2 - t1:0.4f} seconds")
-
-
 

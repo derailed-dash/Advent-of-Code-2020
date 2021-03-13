@@ -21,11 +21,9 @@ Solution:
     To make this scale for part 2, I implemented a dict to store value: node for every node, 
     making it fast to retrieve any node by value.  (Prevents traversing each time.)
 """
-import sys
 import os
 import time
 from circular_linked_list import Circular_Linked_List
-from pprint import pprint as pp
 
 SCRIPT_DIR = os.path.dirname(__file__) 
 INPUT_FILE = "input/data.txt"
@@ -122,17 +120,16 @@ def get_cups(data):
 
     return cups
 
+
 def pad_cups(cups, total_cups):
     for i in range(cups.get_size()+1, total_cups+1):
         cups.insert_end(i)
 
     return cups
 
+
 if __name__ == "__main__":
     t1 = time.perf_counter()
     main()
     t2 = time.perf_counter()
     print(f"Execution time: {t2 - t1:0.4f} seconds")
-
-
-

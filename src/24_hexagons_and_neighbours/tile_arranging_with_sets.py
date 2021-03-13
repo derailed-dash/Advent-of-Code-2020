@@ -37,16 +37,12 @@ With each iteration:
     Find neighbours for each.  Create black_neighbours_set using intersection.
     Add / remove tiles from black_tiles, accordingly.
 """
-
-import sys
 import os
 import time
 import re
 import imageio
-import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
-from pprint import pprint as pp
 from hex import Hexagon
 
 SCRIPT_DIR = os.path.dirname(__file__)
@@ -231,6 +227,3 @@ if __name__ == "__main__":
     main()
     t2 = time.perf_counter()
     print(f"Execution time: {t2 - t1:0.4f} seconds")
-
-
-

@@ -31,12 +31,9 @@ With each iteration:
     Pad tile dict to account for edge effects.
     Loop through all tiles.  Find neighbours for each.  Count black neighbours.  Flip accordingly.
 """
-
-import sys
 import os
 import time
 import re
-from pprint import pprint as pp
 from hex import Hexagon
 
 INPUT_FILE = "input/data.txt"
@@ -149,6 +146,3 @@ if __name__ == "__main__":
     main()
     t2 = time.perf_counter()
     print(f"Execution time: {t2 - t1:0.4f} seconds")
-
-
-

@@ -121,6 +121,7 @@ class Tile:
 
         return edge_values
 
-    def edge_value(self, edge):
+    @staticmethod
+    def edge_value(edge):
         binary_edge = edge.replace(".", "0").replace("#", "1")
         return int(binary_edge, 2)   

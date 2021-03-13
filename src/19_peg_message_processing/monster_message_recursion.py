@@ -25,10 +25,8 @@ Solution 1 of 2:
     If we're at the bottom of the recursion and matching a letter successfully, 
     we move on to the next character in the string, and match against the remainder of the stack.
 """
-import sys
 import os
 import time
-import re
 from pprint import pprint as pp
 
 SCRIPT_DIR = os.path.dirname(__file__) 

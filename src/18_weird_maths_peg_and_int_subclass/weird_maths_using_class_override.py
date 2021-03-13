@@ -17,12 +17,9 @@ Part 2
 ------
 Addition is evaluated before multiplication.
 """
-import sys
 import os
 import re
-import sys
 import time
-from pprint import pprint as pp
 
 SCRIPT_DIR = os.path.dirname(__file__) 
 INPUT_FILE = "input/math_puzzle.txt"
@@ -52,7 +49,6 @@ def main():
     # replace every * with -; but - will perform multiplication.
     # But because - and + have same precedence, they simply get evaluated left to right
     lines = re.sub(r"(\d+)", r"I(\1)", input).replace("*", "-").splitlines()
-    # pp(lines)
 
     # evalute the input as though code
     print(sum(eval(line) for line in lines))
@@ -73,4 +69,5 @@ if __name__ == "__main__":
     t1 = time.perf_counter()
     main()
     t2 = time.perf_counter()
-    print(f"Execution time: {t2 - t1:0.4f} seconds")   
+    print(f"Execution time: {t2 - t1:0.4f} seconds")
+     
