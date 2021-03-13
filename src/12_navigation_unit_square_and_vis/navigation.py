@@ -14,11 +14,9 @@ N, S, E, W means move (translate) the ferry in that direction by given magnitude
 L, R means rotate ferry in that direction, given degrees.
 F means forward (translate) in the direction we're currently heading.
 """
-
 import sys
 import os
 import time
-from pprint import pprint as pp
 
 INPUT_FILE = "input/nav.txt"
 SAMPLE_INPUT_FILE = "input/sample_nav.txt"

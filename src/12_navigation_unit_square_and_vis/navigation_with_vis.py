@@ -26,7 +26,6 @@ N, S, E, W means translate the waypoint by given magnitude.
 L, R means rotate waypoint about the ferry, maintaining the distance between ship and waypoint
 F means move the ferry (translate) towards waypoint, n times the magnitude of the vector to the waypoint
 """
-
 import sys
 import os
 import time
@@ -177,16 +176,11 @@ def process_waypoint_instruction(instr, waypoint, location):
     elif (instr_type == 'R'):
         rotations = instr_mag // 90
         for _ in range(rotations):
-            old_x = waypoint[X]
-            waypoint[X] = waypoint[Y]
-            waypoint[Y] = -old_x
+            waypoint[Y], waypoint[X] = -waypoint[X], waypoint[Y]
     elif (instr_type == 'L'):
         rotations = instr_mag // 90
         for _ in range(rotations):
-            old_y = waypoint[Y]
-            waypoint[Y] = waypoint[X]
-            waypoint[X] = -old_y
-
+            waypoint[X], waypoint[Y] = -waypoint[Y], waypoint[X]
     elif (instr_type == 'F'):
         location[X] = location[X] + instr_mag * waypoint[X]
         location[Y] = location[Y] + instr_mag * waypoint[Y]

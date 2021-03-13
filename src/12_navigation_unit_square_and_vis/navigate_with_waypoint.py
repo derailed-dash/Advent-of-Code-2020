@@ -17,7 +17,6 @@ F means move the ferry (translate) towards waypoint, n times the magnitude of th
 import sys
 import os
 import time
-from pprint import pprint as pp
 
 INPUT_FILE = "input/nav.txt"
 SAMPLE_INPUT_FILE = "input/sample_nav.txt"
@@ -45,8 +44,8 @@ def main():
     print("Script location: " + script_dir)
 
     # path of input file
-    #input_file = os.path.join(script_dir, INPUT_FILE)
-    input_file = os.path.join(script_dir, SAMPLE_INPUT_FILE)
+    input_file = os.path.join(script_dir, INPUT_FILE)
+    # input_file = os.path.join(script_dir, SAMPLE_INPUT_FILE)
     print("Input file is: " + input_file)
 
     nav_instructions = read_input(input_file)
@@ -83,15 +82,11 @@ def process_instruction(instr):
     elif (instr_type == 'R'):
         rotations = instr_mag // 90
         for _ in range(rotations):
-            old_x = waypoint[X]
-            waypoint[X] = waypoint[Y]
-            waypoint[Y] = -old_x
+            waypoint[Y], waypoint[X] = -waypoint[X], waypoint[Y]
     elif (instr_type == 'L'):
         rotations = instr_mag // 90
         for _ in range(rotations):
-            old_y = waypoint[Y]
-            waypoint[Y] = waypoint[X]
-            waypoint[X] = -old_y
+            waypoint[X], waypoint[Y] = -waypoint[Y], waypoint[X]
 
     elif (instr_type == 'F'):
         location[X] = location[X] + instr_mag * waypoint[X]
