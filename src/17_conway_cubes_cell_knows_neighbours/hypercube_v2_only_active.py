@@ -24,15 +24,13 @@ Part 2
 ------
 As before, but now extends to 4D.
 """
-
-import sys
 import os
 import time
+from pprint import pprint as pp
 import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-from cell import *
-from pprint import pprint as pp
+from cell import Cell, Cell4d
+
 
 SCRIPT_DIR = os.path.dirname(__file__) 
 INPUT_FILE = "input/init_state.txt"
@@ -47,11 +45,11 @@ def main():
     # input_file = os.path.join(SCRIPT_DIR, SAMPLE_INPUT_FILE)
     print("Input file is: " + input_file)
 
-    input = read_input(input_file)
-    pp(input)
+    input_state = read_input(input_file)
+    pp(input_state)
 
     grid = set()
-    process_init(input, grid)
+    process_init(input_state, grid)
     for i in range(CYCLES):
         print(f"Cycle {i}:")
         # show_grid(grid)
@@ -60,7 +58,7 @@ def main():
     print(f"Sum active: {len(grid)}")
 
     grid = set()
-    process_init_4d(input, grid)
+    process_init_4d(input_state, grid)
 
     for i in range(CYCLES):
         print(f"Cycle {i}:")
@@ -101,18 +99,17 @@ def show_grid(grid):
 
         xyz[x, y, z] = 1
 
-    fig = plt.figure()
-    ax = plt.axes(projection='3d')
+    axes = plt.axes(projection='3d')
     for index, active in np.ndenumerate(xyz):
         if active == 1:
-            ax.scatter3D(*index, c='blue', marker='s', s=200, alpha=0.7)
+            axes.scatter3D(*index, c='blue', marker='s', s=200, alpha=0.7)
         else:
-            ax.scatter3D(*index, c='yellow', marker='s', s=200, alpha=0.7)
+            axes.scatter3D(*index, c='yellow', marker='s', s=200, alpha=0.7)
 
-    ax.set_xlabel('x')
-    ax.set_ylabel('y')
-    ax.set_zlabel('z')
-    ax.set_title('Cells')
+    axes.set_xlabel('x')
+    axes.set_ylabel('y')
+    axes.set_zlabel('z')
+    axes.set_title('Cells')
 
     plt.show()
     
@@ -149,22 +146,22 @@ def execute_cycle(grid):
     return grid       
 
 
-def process_init(input, grid: set):
+def process_init(input_data, grid: set):
     # initialisation grid is 2D, so z coordinate is 0
     # only store active cells in the grid
-    for y in range(len(input)):
-        for x in range(len(input[y])):
-            if (input[y][x] == ACTIVE):
+    for y in range(len(input_data)):
+        for x in range(len(input_data[y])):
+            if (input_data[y][x] == ACTIVE):
                 grid.add(Cell([x, y, 0]))
 
 
-def process_init_4d(input, grid):
+def process_init_4d(input_data, grid):
     # initialisation grid is 2D, so z and w coordinates are 0
     # only store active cells in the grid
-    for y in range(len(input)):
-        for x in range(len(input[y])):
-            if (input[y][x] == ACTIVE):
-                grid.add(Cell_4d([x, y, 0, 0]))
+    for y in range(len(input_data)):
+        for x in range(len(input_data[y])):
+            if (input_data[y][x] == ACTIVE):
+                grid.add(Cell4d([x, y, 0, 0]))
 
 
 def read_input(a_file):
@@ -179,6 +176,3 @@ if __name__ == "__main__":
     main()
     t2 = time.perf_counter()
     print(f"Execution time: {t2 - t1:0.4f} seconds")
-
-
-

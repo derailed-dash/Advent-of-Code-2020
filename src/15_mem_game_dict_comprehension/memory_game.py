@@ -14,10 +14,8 @@ when there are millions of iterations.
 Instead, store the last position of each occurence of a number.
 The dict ends up being ~1/10 the size of the data.
 """
-import sys
 import os
 import time
-import re
 from pprint import pprint as pp
 
 SCRIPT_DIR = os.path.dirname(__file__) 

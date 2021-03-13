@@ -26,12 +26,12 @@ N, S, E, W means translate the waypoint by given magnitude.
 L, R means rotate waypoint about the ferry, maintaining the distance between ship and waypoint
 F means move the ferry (translate) towards waypoint, n times the magnitude of the vector to the waypoint
 """
-import sys
 import os
 import time
 from math import sin, cos, radians
-import matplotlib.pyplot as plt
 from pprint import pprint as pp
+import matplotlib.pyplot as plt
+
 
 SCRIPT_DIR = os.path.dirname(__file__) 
 INPUT_FILE = "input/nav.txt"
@@ -200,4 +200,3 @@ if __name__ == "__main__":
     main()
     t2 = time.perf_counter()
     print(f"Execution time: {t2 - t1:0.4f} seconds")
-

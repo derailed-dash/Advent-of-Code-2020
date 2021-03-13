@@ -19,12 +19,11 @@ Part 2
 As before, but now extends to 4D.
 Literally takes 3 minutes to execute with this method.
 """
-
-import sys
 import os
 import time
-from cell import *
 from pprint import pprint as pp
+from cell import Cell, Cell4d
+
 
 INPUT_FILE = "input/init_state.txt"
 SAMPLE_INPUT_FILE = "input/sample_init_state.txt"
@@ -44,12 +43,12 @@ def main():
     # input_file = os.path.join(script_dir, SAMPLE_INPUT_FILE)
     print("Input file is: " + input_file)
 
-    input = read_input(input_file)
-    pp(input)
+    input_data = read_input(input_file)
+    pp(input_data)
 
     grid = {}
     # process_init(input, grid)
-    process_init_4d(input, grid)
+    process_init_4d(input_data, grid)
 
     for i in range(CYCLES):
         print(f"Cycle {i}:")
@@ -97,18 +96,18 @@ def execute_cycle(grid):
     return new_grid       
 
 
-def process_init(input, grid):
-    for y in range(len(input)):
-        for x in range(len(input[y])):
+def process_init(input_data, grid):
+    for y in range(len(input_data)):
+        for x in range(len(input_data[y])):
             cell = Cell([x, y, 0])
-            grid[cell] = input[y][x]
+            grid[cell] = input_data[y][x]
 
 
-def process_init_4d(input, grid):
-    for y in range(len(input)):
-        for x in range(len(input[y])):
-            cell = Cell_4d([x, y, 0, 0])
-            grid[cell] = input[y][x]
+def process_init_4d(input_data, grid):
+    for y in range(len(input_data)):
+        for x in range(len(input_data[y])):
+            cell = Cell4d([x, y, 0, 0])
+            grid[cell] = input_data[y][x]
 
 
 def read_input(a_file):
@@ -123,6 +122,3 @@ if __name__ == "__main__":
     main()
     t2 = time.perf_counter()
     print(f"Execution time: {t2 - t1:0.4f} seconds")
-
-
-

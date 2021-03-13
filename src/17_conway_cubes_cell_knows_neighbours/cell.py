@@ -38,13 +38,13 @@ class Cell:
         return neighbours
 
 
-class Cell_4d(Cell):
+class Cell4d(Cell):
     def get_w(self):
         return self.get_coords()[3]
 
     def get_neighbours(self):
         # override
-        neighbours = [Cell_4d([self.get_x()+x, self.get_y()+y, self.get_z()+z, self.get_w()+w]) 
+        neighbours = [Cell4d([self.get_x()+x, self.get_y()+y, self.get_z()+z, self.get_w()+w]) 
                         for x in range(-1, 2) 
                         for y in range(-1, 2) 
                         for z in range(-1, 2)

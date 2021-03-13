@@ -28,8 +28,6 @@ Sort by most invalid fields to least invalid.  The first rule will have only one
 The difference against ALL fields set will reveal the field that is valid.
 We then add this to the identified fields and positions list.  
 """
-
-import sys
 import os
 import time
 import re
@@ -46,10 +44,10 @@ def main():
     # input_file = os.path.join(SCRIPT_DIR, SAMPLE_INPUT_FILE)
     print("Input file is: " + input_file)
 
-    input = read_input(input_file)
+    ticket_data = read_input(input_file)
     # pp(input)
 
-    field_rules, my_ticket, nearby_tickets = process_input(input)
+    field_rules, my_ticket, nearby_tickets = process_input(ticket_data)
     # pp(field_rules)
 
     # pp(nearby_tickets)
@@ -66,7 +64,8 @@ def main():
     fields_and_positions = find_position_for_field(field_rules, fields_and_invalid_positions)
     # pp(fields_and_positions)
 
-    departure_field_positions = [fields_and_positions[x] for x in fields_and_positions.keys() if x.startswith("departure")]
+    departure_field_positions = [fields_and_positions[x] for x in fields_and_positions 
+                                 if x.startswith("departure")]
     print(f"Daparture field positions: {departure_field_positions}")
 
     my_departure_field_values = {}
@@ -158,7 +157,8 @@ def find_position_for_field(rules, fields_and_invalid_positions):
 
     # sort our dictionaries by size.  
     # I.e. the one with most invalid fields.  This one will only be missing one field.
-    for field_name in sorted(fields_and_invalid_positions, key=lambda k: len(fields_and_invalid_positions[k]), reverse=True):
+    for field_name in sorted(fields_and_invalid_positions, 
+                             key=lambda k: len(fields_and_invalid_positions[k]), reverse=True):
         nm_set = set(fields_and_invalid_positions[field_name])
         
         # add, to this set of invalid field positions, 
@@ -217,4 +217,3 @@ if __name__ == "__main__":
     main()
     t2 = time.perf_counter()
     print(f"Execution time: {t2 - t1:0.4f} seconds")
-
