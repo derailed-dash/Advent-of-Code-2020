@@ -29,7 +29,7 @@ import time
 from pprint import pprint as pp
 import numpy as np
 import matplotlib.pyplot as plt
-from cell import Cell, Cell4d
+from d17_conway_cubes_cell_knows_neighbours.cell import Cell, Cell4d
 
 
 SCRIPT_DIR = os.path.dirname(__file__) 

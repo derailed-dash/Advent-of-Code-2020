@@ -22,8 +22,7 @@ Literally takes 3 minutes to execute with this method.
 import os
 import time
 from pprint import pprint as pp
-from cell import Cell, Cell4d
-
+from d17_conway_cubes_cell_knows_neighbours.cell import Cell, Cell4d
 
 INPUT_FILE = "input/init_state.txt"
 SAMPLE_INPUT_FILE = "input/sample_init_state.txt"
