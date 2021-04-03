@@ -43,7 +43,7 @@ import re
 import imageio
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
-from hex import Hexagon
+from d24_hexagons_and_neighbours.hex import Hexagon
 
 SCRIPT_DIR = os.path.dirname(__file__)
 INPUT_FILE = "input/data.txt"
@@ -70,7 +70,7 @@ def main():
     living_art(black_tiles, NUMBER_OF_ITERATIONS)
     print(f"Sum of black tiles: {len(black_tiles)}")
 
-    if is_vis_enabled:
+    if is_vis_enabled():
         build_anim()
     else:
         print("Visualisation disabled.")

@@ -34,7 +34,7 @@ With each iteration:
 import os
 import time
 import re
-from hex import Hexagon
+from d24_hexagons_and_neighbours.hex import Hexagon
 
 INPUT_FILE = "input/data.txt"
 SAMPLE_INPUT_FILE = "input/sample_data.txt"
