@@ -96,7 +96,9 @@ def draw_graph(coords_visited, output_file):
     y_coords = [y for x, y in coords_visited]
 
     # set x and y to use same scale
-    plt.gca().set_aspect('equal', adjustable='box')
+    axes = plt.gca()
+    axes.set_aspect('equal', adjustable='box')
+    axes.grid(True)
     plt.plot(x_coords, y_coords, color="green", marker="o", markerfacecolor="red", markersize=5)
     plt.title("Ferry Movement")
 
