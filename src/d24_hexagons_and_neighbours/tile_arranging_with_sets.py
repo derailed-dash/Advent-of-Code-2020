@@ -101,16 +101,12 @@ def pad_all_tiles(black_tiles, all_tiles):
 def vis_state(black_tiles, all_tiles, iteration):
     white_tiles = all_tiles.difference(black_tiles)
 
-    min_x = min(all_tiles, key=lambda x: x[0])[0]
-    max_x = max(all_tiles, key=lambda x: x[0])[0]
-    min_y = min(all_tiles, key=lambda x: x[1])[1]
-    max_y = max(all_tiles, key=lambda x: x[1])[1]
-
-    # extract coords into single dimensions    
-    white_x = [x for x, y in white_tiles]
-    white_y = [y for x, y in white_tiles]
-    black_x = [x for x, y in black_tiles]
-    black_y = [y for x, y in black_tiles]
+    all_x, all_y = zip(*all_tiles)
+    white_x, white_y = zip(*white_tiles)
+    black_x, black_y = zip(*black_tiles)
+    
+    min_x, max_x = min(all_x), max(all_x)
+    min_y, max_y = min(all_y), max(all_y)
 
     # hexagon!
     shape = 'h'
@@ -126,13 +122,13 @@ def vis_state(black_tiles, all_tiles, iteration):
 
     # dynamically compute the marker size
     fig.canvas.draw()
-    sz = ((ax.get_window_extent().width / (max_x-min_x) * (134/fig.dpi)) ** 2)
+    mkr_size = ((ax.get_window_extent().width / (max_x-min_x) * (134/fig.dpi)) ** 2)
 
     # make sure the ticks have integer values
     ax.xaxis.set_major_locator(MaxNLocator(integer=True))
     
-    ax.scatter(black_x, black_y, marker=shape, s=sz, color='black', edgecolors='black')
-    ax.scatter(white_x, white_y, marker=shape, s=sz, color='white', edgecolors='black')
+    ax.scatter(black_x, black_y, marker=shape, s=mkr_size, color='black', edgecolors='black')
+    ax.scatter(white_x, white_y, marker=shape, s=mkr_size, color='white', edgecolors='black')
     ax.set_title(f"Tile Floor, Iteration: {iteration-1}")
     
     if not os.path.exists(OUTPUT_DIR):

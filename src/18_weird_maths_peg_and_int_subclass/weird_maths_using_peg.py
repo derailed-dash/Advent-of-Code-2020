@@ -96,11 +96,11 @@ INPUT_FILE = "input/math_puzzle.txt"
 SAMPLE_INPUT_FILE = "input/test_math_puzzle.txt"
 
 grammar = Grammar(r"""
-    EXPR = NUMBER_OR_BRACKETS (OP NUMBER_OR_BRACKETS)+
+    EXPR = NUMBER_OR_BRACKETS (OP NUMBER_OR_BRACKETS)+ "\n"?
     NUMBER_OR_BRACKETS = (NUMBER / BRACKETS)
     BRACKETS = "(" EXPR ")"
     OP = ~r"\s*([+*])\s*"
-    NUMBER = ~r"\d+"   
+    NUMBER = ~r"\d+"
 """)
 
 def main():
@@ -111,13 +111,11 @@ def main():
     # pp(input)
     
     wmv = WeirdMathVisitor()
-    wmv.grammar = grammar
-    sum_results = sum(wmv.parse(line) for line in input)
+    sum_results = sum(wmv.visit(grammar.parse(line)) for line in input)
     print(f"Results for left-to-right: {sum_results}")
 
     wmv = WeirdMathAdditionOverMultiplicationVisitor()
-    wmv.grammar = grammar
-    sum_results = sum(wmv.parse(line) for line in input)
+    sum_results = sum(wmv.visit(grammar.parse(line)) for line in input)
     print(f"Result for addition-over-multiplication: {sum_results}")
 
 
